@@ -49,7 +49,7 @@
                                         {% for member_id, avail_info in availability[date_str].items() %}
                                             {% if not avail_info.available %}
                                                 {% set member = members[member_id] %}
-                                                <div class="member-status unavailable" data-member-id="{{ member_id }}" data-date="{{ date_str }}">
+                                                <div class="member-status {% if avail_info.reason.startswith('OOO:') %}ooo-status{% else %}holiday-status{% endif %}" data-member-id="{{ member_id }}" data-date="{{ date_str }}">
                                                     <small>
                                                         {% if avail_info.reason.startswith('OOO:') %}
                                                             <div class="d-flex justify-content-between align-items-center">
@@ -59,7 +59,7 @@
                                                                 </div>
                                                             </div>
                                                         {% else %}
-                                                            {{ member.name }} | {{ member.country }}{% if member.region %}, {{ member.region }}{% endif %} (public holiday)
+                                                            {{ member.name }} | {{ avail_info.reason.replace('Holiday: ', '') }} | {{ member.country }}{% if member.region %}, {{ member.region }}{% endif %}
                                                         {% endif %}
                                                     </small>
                                                 </div>
@@ -86,11 +86,17 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-8">
-                        <div class="member-status unavailable d-inline-block me-2">Out of Office</div>
-                        <span>Team members who are away (Holiday or OOO)</span>
+                    <div class="col-md-10">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="member-status ooo-status d-inline-block me-3" style="min-width: 120px;">Out of Office</div>
+                            <span>Team members on vacation, sick leave, or personal time</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="member-status holiday-status d-inline-block me-3" style="min-width: 120px;">Public Holiday</div>
+                            <span>Team members observing national or regional holidays</span>
+                        </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <p class="text-muted mb-0"><small>Note: Only showing employees who are out of office</small></p>
                     </div>
                 </div>
