@@ -1,1 +1,0 @@
-Always enable virtual environment (.venv) at the root of the workspace.

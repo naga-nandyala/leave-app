@@ -721,6 +721,61 @@ def add_member():
     return redirect(url_for("members"))
 
 
+@app.route("/delete_member", methods=["POST"])
+def delete_member():
+    """Delete a team member"""
+    print("Delete member endpoint called")
+    try:
+        data = request.get_json()
+        print(f"Received data: {data}")
+        member_id = data.get("member_id")
+        print(f"Member ID: {member_id}")
+
+        if not member_id:
+            print("No member ID provided")
+            return jsonify({"success": False, "error": "Member ID is required"}), 400
+
+        members_data = get_members()
+        print(f"Current members: {list(members_data.keys())}")
+
+        if member_id not in members_data:
+            print(f"Member {member_id} not found")
+            return jsonify({"success": False, "error": "Member not found"}), 404
+
+        # Get member details before deletion for logging
+        member_info = members_data[member_id]
+        member_name = member_info["name"]
+        print(f"Deleting member: {member_name}")
+
+        # Delete the member
+        del members_data[member_id]
+        save_members(members_data)
+
+        # Also remove any OOO entries for this member
+        ooo_data = get_ooo()
+        if member_id in ooo_data:
+            del ooo_data[member_id]
+            save_ooo(ooo_data)
+
+        # Log the operation
+        log_operation(
+            "DELETE_MEMBER",
+            member_id,
+            f"Deleted member: {member_name} from {member_info['country']}, {member_info.get('region', '')}",
+            member_name,
+        )
+
+        response = {"success": True, "message": f"Member {member_name} deleted successfully!"}
+        print(f"Returning response: {response}")
+        return jsonify(response)
+    
+    except Exception as e:
+        print(f"Error in delete_member: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "error": f"Internal server error: {str(e)}"}), 500
+
+
 @app.route("/holidays")
 def holidays_page():
     """Manage holidays"""

@@ -89,12 +89,13 @@
                                         
                                         {% if 'national' in year_holidays and year_holidays.national %}
                                             <h6 class="text-primary">National Holidays</h6>
-                                            {% for country, country_holidays in year_holidays.national.items() %}
+                                            {% for country in year_holidays.national.keys() | sort %}
+                                                {% set country_holidays = year_holidays.national[country] %}
                                                 <div class="mb-2">
                                                     <strong>{{ country }}:</strong>
                                                     <ul class="list-unstyled ms-3">
-                                                        {% for date, name in country_holidays.items() %}
-                                                            <li><small>{{ date }}: {{ name }}</small></li>
+                                                        {% for date in country_holidays.keys() | sort %}
+                                                            <li><small>{{ date }}: {{ country_holidays[date] }}</small></li>
                                                         {% endfor %}
                                                     </ul>
                                                 </div>
@@ -102,16 +103,18 @@
                                         {% endif %}
                                         
                                         {% if 'regional' in year_holidays and year_holidays.regional %}
-                                            <h6 class="text-secondary">Regional Holidays</h6>
-                                            {% for country, regions in year_holidays.regional.items() %}
+                                            <h6 class="text-primary">Regional Holidays</h6>
+                                            {% for country in year_holidays.regional.keys() | sort %}
+                                                {% set regions = year_holidays.regional[country] %}
                                                 <div class="mb-2">
                                                     <strong>{{ country }}:</strong>
-                                                    {% for region, region_holidays in regions.items() %}
+                                                    {% for region in regions.keys() | sort %}
+                                                        {% set region_holidays = regions[region] %}
                                                         <div class="ms-3">
                                                             <em>{{ region }}:</em>
                                                             <ul class="list-unstyled ms-3">
-                                                                {% for date, name in region_holidays.items() %}
-                                                                    <li><small>{{ date }}: {{ name }}</small></li>
+                                                                {% for date in region_holidays.keys() | sort %}
+                                                                    <li><small>{{ date }}: {{ region_holidays[date] }}</small></li>
                                                                 {% endfor %}
                                                             </ul>
                                                         </div>
