@@ -52,10 +52,12 @@
                                                 <div class="member-status unavailable" data-member-id="{{ member_id }}" data-date="{{ date_str }}">
                                                     <small>
                                                         {% if avail_info.reason.startswith('OOO:') %}
-                                                            {{ member.name }} | OOO
-                                                            <br>
-                                                            <button class="btn btn-xs btn-outline-info view-ooo-btn" data-member-id="{{ member_id }}" data-date="{{ date_str }}" title="View/Edit OOO">✎</button>
-                                                            <button class="btn btn-xs btn-outline-danger delete-ooo-btn" data-member-id="{{ member_id }}" data-date="{{ date_str }}" title="Cancel Vacation">×</button>
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <span>{{ member.name }} | OOO</span>
+                                                                <div>
+                                                                    <button class="btn btn-xs btn-outline-info view-ooo-btn" data-member-id="{{ member_id }}" data-date="{{ date_str }}" title="View/Edit OOO">✎</button>
+                                                                </div>
+                                                            </div>
                                                         {% else %}
                                                             {{ member.name }} | {{ member.country }}{% if member.region %}, {{ member.region }}{% endif %} (public holiday)
                                                         {% endif %}
@@ -284,40 +286,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Error canceling vacation');
             });
         }
-    });
-
-    // Delete single day OOO functionality (quick delete)
-    document.querySelectorAll('.delete-ooo-btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const memberId = this.getAttribute('data-member-id');
-            const date = this.getAttribute('data-date');
-            
-            if (confirm('Are you sure you want to remove this OOO entry for this specific day?')) {
-                fetch('/delete_ooo', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        member_id: memberId,
-                        date: date
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        alert('Error deleting OOO: ' + (data.error || 'Unknown error'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error deleting OOO');
-                });
-            }
-        });
     });
 });
 </script>

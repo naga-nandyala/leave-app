@@ -62,7 +62,7 @@
     border: 1px solid #f5c6cb;
 }
 
-.delete-ooo-btn, .view-ooo-btn {
+.view-ooo-btn {
     font-size: 0.6em;
     padding: 0px 3px;
     line-height: 1;
@@ -71,14 +71,18 @@
     background: rgba(255,255,255,0.8);
 }
 
-.delete-ooo-btn:hover {
-    background: #dc3545;
-    color: white;
-}
-
 .view-ooo-btn:hover {
     background: #0d6efd;
     color: white;
+}
+
+/* Ensure buttons stay properly aligned in small calendar cells */
+.member-status .d-flex {
+    flex-wrap: nowrap;
+}
+
+.member-status .d-flex > div {
+    flex-shrink: 0;
 }
 
 .navbar-brand {
