@@ -344,7 +344,7 @@ def get_sorted_holidays():
 def get_holidays_by_year():
     """Get holidays organized by year with weekday information"""
     from datetime import datetime
-    
+
     holidays_data = get_holidays()
     holidays_by_year = {}
 
@@ -357,7 +357,7 @@ def get_holidays_by_year():
                     holidays_by_year[year] = {"national": {}, "regional": {}}
                 if country not in holidays_by_year[year]["national"]:
                     holidays_by_year[year]["national"][country] = {}
-                
+
                 # Calculate weekday
                 try:
                     date_obj = datetime.strptime(date_str, "%Y-%m-%d")
@@ -365,7 +365,7 @@ def get_holidays_by_year():
                     formatted_date = f"{date_str} ({weekday})"
                 except Exception:
                     formatted_date = date_str  # fallback if date parsing fails
-                
+
                 holidays_by_year[year]["national"][country][formatted_date] = name
 
     # Process regional holidays
@@ -380,7 +380,7 @@ def get_holidays_by_year():
                         holidays_by_year[year]["regional"][country] = {}
                     if region not in holidays_by_year[year]["regional"][country]:
                         holidays_by_year[year]["regional"][country][region] = {}
-                    
+
                     # Calculate weekday
                     try:
                         date_obj = datetime.strptime(date_str, "%Y-%m-%d")
@@ -388,7 +388,7 @@ def get_holidays_by_year():
                         formatted_date = f"{date_str} ({weekday})"
                     except Exception:
                         formatted_date = date_str  # fallback if date parsing fails
-                    
+
                     holidays_by_year[year]["regional"][country][region][formatted_date] = name
 
     return holidays_by_year
