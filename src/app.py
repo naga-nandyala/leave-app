@@ -299,6 +299,48 @@ def save_history(history):
     save_data(HISTORY_FILE, history)
 
 
+def get_sorted_holidays():
+    """Get holidays sorted by year, then national/regional, then country, then date"""
+    holidays_data = get_holidays()
+    sorted_holidays = []
+
+    # Process national holidays
+    if "national" in holidays_data:
+        for country, country_holidays in holidays_data["national"].items():
+            for date_str, name in country_holidays.items():
+                sorted_holidays.append(
+                    {
+                        "type": "national",
+                        "country": country,
+                        "region": None,
+                        "date": date_str,
+                        "name": name,
+                        "year": int(date_str.split("-")[0]),
+                    }
+                )
+
+    # Process regional holidays
+    if "regional" in holidays_data:
+        for country, regions in holidays_data["regional"].items():
+            for region, region_holidays in regions.items():
+                for date_str, name in region_holidays.items():
+                    sorted_holidays.append(
+                        {
+                            "type": "regional",
+                            "country": country,
+                            "region": region,
+                            "date": date_str,
+                            "name": name,
+                            "year": int(date_str.split("-")[0]),
+                        }
+                    )
+
+    # Sort by: year (ascending), type (national first), country (ascending), date (ascending)
+    sorted_holidays.sort(key=lambda x: (x["year"], x["type"], x["country"], x["date"]))
+
+    return sorted_holidays
+
+
 def log_operation(operation_type, member_id, details, member_name=None):
     """Log an operation to the history"""
     history = get_history()
@@ -481,10 +523,13 @@ def get_member_locations():
 
 @app.route("/api/generate_holidays", methods=["POST"])
 def generate_holidays_api():
-    """Generate holidays for all countries and regions in the member list"""
+    """Generate holidays for all countries and regions in the member list for the next 2 years"""
     try:
-        data = request.get_json()
-        year = data.get("year", 2025)
+        from datetime import datetime
+
+        # Always generate for current year and next year
+        current_year = datetime.now().year
+        years = [current_year, current_year + 1]
 
         # Get all members to extract countries and regions
         members_data = get_members()
@@ -509,35 +554,33 @@ def generate_holidays_api():
             return jsonify({"error": "No countries found in member data"}), 400
 
         # Clear all existing holidays and start fresh
-        holidays_data = {
-            "national": {},
-            "regional": {}
-        }
+        holidays_data = {"national": {}, "regional": {}}
 
         holiday_count = 0
 
-        # Generate national holidays for each country used by members
+        # Generate national holidays for each country used by members for all years
         for country in countries_in_use:
             country_code = COUNTRY_CODE_MAP.get(country)
             if not country_code:
                 continue
 
-            try:
-                # Get holidays for the country
-                country_holidays = holidays.country_holidays(country_code, years=year)
+            holidays_data["national"][country] = {}
 
-                holidays_data["national"][country] = {}
+            for year in years:
+                try:
+                    # Get holidays for the country for this year
+                    country_holidays = holidays.country_holidays(country_code, years=year)
 
-                # Add holidays to our data
-                for date, name in country_holidays.items():
-                    date_str = date.strftime("%Y-%m-%d")
-                    holidays_data["national"][country][date_str] = name
-                    holiday_count += 1
+                    # Add holidays to our data
+                    for date, name in country_holidays.items():
+                        date_str = date.strftime("%Y-%m-%d")
+                        holidays_data["national"][country][date_str] = name
+                        holiday_count += 1
 
-            except Exception as e:
-                print(f"Error generating holidays for {country}: {e}")
+                except Exception as e:
+                    print(f"Error generating holidays for {country} in {year}: {e}")
 
-        # Generate regional holidays for regions used by members
+        # Generate regional holidays for regions used by members for all years
         for region_data in regions_in_use:
             region = region_data.get("region")
             country = region_data.get("country")
@@ -546,24 +589,25 @@ def generate_holidays_api():
             if not country_code or not region:
                 continue
 
-            try:
-                # Get holidays for the region
-                region_holidays = holidays.country_holidays(country_code, state=region, years=year)
+            if country not in holidays_data["regional"]:
+                holidays_data["regional"][country] = {}
+            holidays_data["regional"][country][region] = {}
 
-                if country not in holidays_data["regional"]:
-                    holidays_data["regional"][country] = {}
-                holidays_data["regional"][country][region] = {}
+            for year in years:
+                try:
+                    # Get holidays for the region for this year
+                    region_holidays = holidays.country_holidays(country_code, state=region, years=year)
 
-                # Add regional holidays to our data
-                for date, name in region_holidays.items():
-                    date_str = date.strftime("%Y-%m-%d")
-                    # Only add if it's not already in national holidays
-                    if date_str not in holidays_data["national"].get(country, {}):
-                        holidays_data["regional"][country][region][date_str] = name
-                        holiday_count += 1
+                    # Add regional holidays to our data
+                    for date, name in region_holidays.items():
+                        date_str = date.strftime("%Y-%m-%d")
+                        # Only add if it's not already in national holidays
+                        if date_str not in holidays_data["national"].get(country, {}):
+                            holidays_data["regional"][country][region][date_str] = name
+                            holiday_count += 1
 
-            except Exception as e:
-                print(f"Error generating holidays for {region}, {country}: {e}")
+                except Exception as e:
+                    print(f"Error generating holidays for {region}, {country} in {year}: {e}")
 
         # Save the updated holidays
         save_holidays(holidays_data)
@@ -574,17 +618,18 @@ def generate_holidays_api():
         log_operation(
             "GENERATE_HOLIDAYS",
             None,  # No specific member_id for this system operation
-            f"Generated {holiday_count} holidays for countries: {', '.join(countries_list)} and regions: {', '.join(regions_list)}",
-            "System"
+            f"Generated {holiday_count} holidays for {len(years)} years ({', '.join(map(str, years))}) - Countries: {', '.join(countries_list)} and regions: {', '.join(regions_list)}",
+            "System",
         )
 
         return jsonify(
             {
                 "success": True,
                 "count": holiday_count,
+                "years": years,
                 "countries": countries_list,
                 "regions": regions_list,
-                "message": f"Generated {holiday_count} holidays for {len(countries_list)} countries and {len(regions_list)} regions",
+                "message": f"Generated {holiday_count} holidays for {len(years)} years ({', '.join(map(str, years))}) covering {len(countries_list)} countries and {len(regions_list)} regions",
             }
         )
 
