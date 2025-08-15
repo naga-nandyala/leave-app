@@ -1,0 +1,30 @@
+[
+  {
+    "timestamp": "2025-08-15 21:01:00",
+    "operation_type": "DELETE_OOO",
+    "member_id": "5",
+    "member_name": "Emma Brown",
+    "details": "Deleted OOO entry for 2025-08-29 (was Personal)"
+  },
+  {
+    "timestamp": "2025-08-15 21:06:36",
+    "operation_type": "ADD_OOO",
+    "member_id": "1",
+    "member_name": "Naga",
+    "details": "Added OOO (Training) for 2025-09-15"
+  },
+  {
+    "timestamp": "2025-08-15 21:06:50",
+    "operation_type": "ADD_OOO",
+    "member_id": "2",
+    "member_name": "Anuj",
+    "details": "Added OOO (Sick Leave) for 2025-09-15"
+  },
+  {
+    "timestamp": "2025-08-15 21:11:43",
+    "operation_type": "CANCEL_VACATION",
+    "member_id": "1",
+    "member_name": "Naga",
+    "details": "Canceled vacation (Vacation) from 2025-08-22 to 2025-08-26"
+  }
+]

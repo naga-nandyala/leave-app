@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Out of Office - Team Availability{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2>Out of Office Management</h2>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Add Out of Office Entry</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_ooo') }}">
+                    <div class="mb-3">
+                        <label for="member_id" class="form-label">Team Member</label>
+                        <select class="form-control" id="member_id" name="member_id" required>
+                            <option value="">Select Member</option>
+                            {% for member_id, member in members.items() %}
+                                <option value="{{ member_id }}">{{ member.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="start_date" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="end_date" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reason" class="form-label">Reason</label>
+                        <select class="form-control" id="reason" name="reason">
+                            <option value="Vacation">Vacation</option>
+                            <option value="Sick Leave">Sick Leave</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Conference">Conference</option>
+                            <option value="Training">Training</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add OOO Entry</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Current Out of Office Entries</h5>
+            </div>
+            <div class="card-body">
+                {% if ooo %}
+                    {% for member_id, member_ooo in ooo.items() %}
+                        {% if member_id in members %}
+                            <div class="mb-3">
+                                <strong>{{ members[member_id].name }}:</strong>
+                                <ul class="list-unstyled ms-3">
+                                    {% for entry in member_ooo %}
+                                        <li>
+                                            {{ entry.start_date }} to {{ entry.end_date }}
+                                            <br><small class="text-muted">Reason: {{ entry.reason }}</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No out of office entries yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
