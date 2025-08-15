@@ -180,5 +180,68 @@
     "member_id": null,
     "member_name": "System",
     "details": "Generated 81 holidays for countries: China, Australia, Canada, United States and regions: New South Wales (Australia), Victoria (Australia), California (United States), Western Australia (Australia), Ontario (Canada), Queensland (Australia), Northern Territory (Australia), South Australia (Australia)"
+  },
+  {
+    "timestamp": "2025-08-16 09:07:33",
+    "operation_type": "GENERATE_HOLIDAYS",
+    "member_id": null,
+    "member_name": "System",
+    "details": "Generated 167 holidays for 2 years (2025, 2026) - Countries: Australia, China, Canada, United States and regions: New South Wales (Australia), Victoria (Australia), California (United States), Western Australia (Australia), Ontario (Canada), Queensland (Australia), Northern Territory (Australia), South Australia (Australia)"
+  },
+  {
+    "timestamp": "2025-08-16 09:11:39",
+    "operation_type": "GENERATE_HOLIDAYS",
+    "member_id": null,
+    "member_name": "System",
+    "details": "Generated 167 holidays for 2 years (2025, 2026) - Countries: Australia, China, Canada, United States and regions: New South Wales (Australia), Victoria (Australia), California (United States), Western Australia (Australia), Ontario (Canada), Queensland (Australia), Northern Territory (Australia), South Australia (Australia)"
+  },
+  {
+    "timestamp": "2025-08-16 09:13:34",
+    "operation_type": "GENERATE_HOLIDAYS",
+    "member_id": null,
+    "member_name": "System",
+    "details": "Generated 167 holidays for 2 years (2025, 2026) - Countries: Australia, China, Canada, United States and regions: New South Wales (Australia), Victoria (Australia), California (United States), Western Australia (Australia), Ontario (Canada), Queensland (Australia), Northern Territory (Australia), South Australia (Australia)"
+  },
+  {
+    "timestamp": "2025-08-16 09:17:29",
+    "operation_type": "GENERATE_HOLIDAYS",
+    "member_id": null,
+    "member_name": "System",
+    "details": "Generated 167 holidays for 2 years (2025, 2026) - Countries: Canada, China, United States, Australia and regions: New South Wales (Australia), Victoria (Australia), California (United States), Western Australia (Australia), Ontario (Canada), Queensland (Australia), Northern Territory (Australia), South Australia (Australia)"
+  },
+  {
+    "timestamp": "2025-08-16 09:17:59",
+    "operation_type": "ADD_OOO",
+    "member_id": "1",
+    "member_name": "Naga",
+    "details": "Added OOO (Sick Leave) for 2025-08-20"
+  },
+  {
+    "timestamp": "2025-08-16 09:18:06",
+    "operation_type": "ADD_OOO",
+    "member_id": "2",
+    "member_name": "Anuj",
+    "details": "Added OOO (Personal) for 2025-08-20"
+  },
+  {
+    "timestamp": "2025-08-16 09:18:16",
+    "operation_type": "ADD_OOO",
+    "member_id": "3",
+    "member_name": "Xing",
+    "details": "Added OOO (Vacation) from 2025-08-22 to 2025-08-29"
+  },
+  {
+    "timestamp": "2025-08-16 09:18:23",
+    "operation_type": "CANCEL_VACATION",
+    "member_id": "3",
+    "member_name": "Xing",
+    "details": "Canceled vacation (Vacation) from 2025-08-22 to 2025-08-29"
+  },
+  {
+    "timestamp": "2025-08-16 09:18:27",
+    "operation_type": "CANCEL_VACATION",
+    "member_id": "2",
+    "member_name": "Anuj",
+    "details": "Canceled vacation (Personal) for 2025-08-20"
   }
 ]

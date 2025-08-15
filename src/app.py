@@ -341,6 +341,59 @@ def get_sorted_holidays():
     return sorted_holidays
 
 
+def get_holidays_by_year():
+    """Get holidays organized by year with weekday information"""
+    from datetime import datetime
+    
+    holidays_data = get_holidays()
+    holidays_by_year = {}
+
+    # Process national holidays
+    if "national" in holidays_data:
+        for country, country_holidays in holidays_data["national"].items():
+            for date_str, name in country_holidays.items():
+                year = int(date_str.split("-")[0])
+                if year not in holidays_by_year:
+                    holidays_by_year[year] = {"national": {}, "regional": {}}
+                if country not in holidays_by_year[year]["national"]:
+                    holidays_by_year[year]["national"][country] = {}
+                
+                # Calculate weekday
+                try:
+                    date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+                    weekday = date_obj.strftime("%a")  # Mon, Tue, Wed, etc.
+                    formatted_date = f"{date_str} ({weekday})"
+                except Exception:
+                    formatted_date = date_str  # fallback if date parsing fails
+                
+                holidays_by_year[year]["national"][country][formatted_date] = name
+
+    # Process regional holidays
+    if "regional" in holidays_data:
+        for country, regions in holidays_data["regional"].items():
+            for region, region_holidays in regions.items():
+                for date_str, name in region_holidays.items():
+                    year = int(date_str.split("-")[0])
+                    if year not in holidays_by_year:
+                        holidays_by_year[year] = {"national": {}, "regional": {}}
+                    if country not in holidays_by_year[year]["regional"]:
+                        holidays_by_year[year]["regional"][country] = {}
+                    if region not in holidays_by_year[year]["regional"][country]:
+                        holidays_by_year[year]["regional"][country][region] = {}
+                    
+                    # Calculate weekday
+                    try:
+                        date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+                        weekday = date_obj.strftime("%a")  # Mon, Tue, Wed, etc.
+                        formatted_date = f"{date_str} ({weekday})"
+                    except Exception:
+                        formatted_date = date_str  # fallback if date parsing fails
+                    
+                    holidays_by_year[year]["regional"][country][region][formatted_date] = name
+
+    return holidays_by_year
+
+
 def log_operation(operation_type, member_id, details, member_name=None):
     """Log an operation to the history"""
     history = get_history()
@@ -672,9 +725,12 @@ def add_member():
 def holidays_page():
     """Manage holidays"""
     holidays_data = get_holidays()
+    holidays_by_year = get_holidays_by_year()
     # Sort countries alphabetically for display
     sorted_countries = sorted(COUNTRIES_CONFIG.values(), key=lambda x: x["name"])
-    return render_template("holidays.html", holidays=holidays_data, countries=sorted_countries)
+    return render_template(
+        "holidays.html", holidays=holidays_data, holidays_by_year=holidays_by_year, countries=sorted_countries
+    )
 
 
 @app.route("/history")

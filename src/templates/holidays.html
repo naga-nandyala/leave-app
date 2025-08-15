@@ -67,46 +67,67 @@
             </div>
         </div>
     </div>
-    
-    <div class="col-md-4">
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <h5>Current Holidays</h5>
             </div>
             <div class="card-body">
-                {% if holidays %}
-                    {% if 'national' in holidays %}
-                        <h6>National Holidays</h6>
-                        {% for country, country_holidays in holidays.national.items() %}
-                            <div class="mb-3">
-                                <strong>{{ country }}:</strong>
-                                <ul class="list-unstyled ms-3">
-                                    {% for date, name in country_holidays.items() %}
-                                        <li>{{ date }}: {{ name }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    
-                    {% if 'regional' in holidays %}
-                        <h6>Regional Holidays</h6>
-                        {% for country, regions in holidays.regional.items() %}
-                            <div class="mb-3">
-                                <strong>{{ country }}:</strong>
-                                {% for region, region_holidays in regions.items() %}
-                                    <div class="ms-3">
-                                        <em>{{ region }}:</em>
-                                        <ul class="list-unstyled ms-3">
-                                            {% for date, name in region_holidays.items() %}
-                                                <li>{{ date }}: {{ name }}</li>
-                                            {% endfor %}
-                                        </ul>
+                {% if holidays_by_year %}
+                    <div class="row">
+                        {% for year in holidays_by_year.keys()|sort %}
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-header bg-primary text-white">
+                                        <h6 class="mb-0">{{ year }}</h6>
                                     </div>
-                                {% endfor %}
+                                    <div class="card-body">
+                                        {% set year_holidays = holidays_by_year[year] %}
+                                        
+                                        {% if 'national' in year_holidays and year_holidays.national %}
+                                            <h6 class="text-primary">National Holidays</h6>
+                                            {% for country, country_holidays in year_holidays.national.items() %}
+                                                <div class="mb-2">
+                                                    <strong>{{ country }}:</strong>
+                                                    <ul class="list-unstyled ms-3">
+                                                        {% for date, name in country_holidays.items() %}
+                                                            <li><small>{{ date }}: {{ name }}</small></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        
+                                        {% if 'regional' in year_holidays and year_holidays.regional %}
+                                            <h6 class="text-secondary">Regional Holidays</h6>
+                                            {% for country, regions in year_holidays.regional.items() %}
+                                                <div class="mb-2">
+                                                    <strong>{{ country }}:</strong>
+                                                    {% for region, region_holidays in regions.items() %}
+                                                        <div class="ms-3">
+                                                            <em>{{ region }}:</em>
+                                                            <ul class="list-unstyled ms-3">
+                                                                {% for date, name in region_holidays.items() %}
+                                                                    <li><small>{{ date }}: {{ name }}</small></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        
+                                        {% if not year_holidays.national and not year_holidays.regional %}
+                                            <p class="text-muted">No holidays for this year.</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             </div>
                         {% endfor %}
-                    {% endif %}
+                    </div>
                 {% else %}
                     <p class="text-muted">No holidays added yet.</p>
                 {% endif %}
