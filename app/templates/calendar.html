@@ -49,15 +49,17 @@
                                         {% for member_id, avail_info in availability[date_str].items() %}
                                             {% if not avail_info.available %}
                                                 {% set member = members[member_id] %}
-                                                <div class="member-status unavailable" data-member-id="{{ member_id }}" data-date="{{ date_str }}">
+                                                <div class="member-status {% if avail_info.reason.startswith('OOO:') %}ooo-status{% else %}holiday-status{% endif %}" data-member-id="{{ member_id }}" data-date="{{ date_str }}">
                                                     <small>
                                                         {% if avail_info.reason.startswith('OOO:') %}
-                                                            {{ member.name }} | OOO
-                                                            <br>
-                                                            <button class="btn btn-xs btn-outline-info view-ooo-btn" data-member-id="{{ member_id }}" data-date="{{ date_str }}" title="View/Edit OOO">✎</button>
-                                                            <button class="btn btn-xs btn-outline-danger delete-ooo-btn" data-member-id="{{ member_id }}" data-date="{{ date_str }}" title="Cancel Vacation">×</button>
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <span>{{ member.name }} | OOO</span>
+                                                                <div>
+                                                                    <button class="btn btn-xs btn-outline-info view-ooo-btn" data-member-id="{{ member_id }}" data-date="{{ date_str }}" title="View/Edit OOO">✎</button>
+                                                                </div>
+                                                            </div>
                                                         {% else %}
-                                                            {{ member.name }} | {{ member.country }}{% if member.region %}, {{ member.region }}{% endif %} (public holiday)
+                                                            {{ member.name }} | {{ avail_info.reason.replace('Holiday: ', '') }} | {{ member.country }}{% if member.region %}, {{ member.region }}{% endif %}
                                                         {% endif %}
                                                     </small>
                                                 </div>
@@ -84,11 +86,17 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-8">
-                        <div class="member-status unavailable d-inline-block me-2">Out of Office</div>
-                        <span>Team members who are away (Holiday or OOO)</span>
+                    <div class="col-md-10">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="member-status ooo-status d-inline-block me-3" style="min-width: 120px;">Out of Office</div>
+                            <span>Team members on vacation, sick leave, or personal time</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="member-status holiday-status d-inline-block me-3" style="min-width: 120px;">Public Holiday</div>
+                            <span>Team members observing national or regional holidays</span>
+                        </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <p class="text-muted mb-0"><small>Note: Only showing employees who are out of office</small></p>
                     </div>
                 </div>
@@ -284,40 +292,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Error canceling vacation');
             });
         }
-    });
-
-    // Delete single day OOO functionality (quick delete)
-    document.querySelectorAll('.delete-ooo-btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const memberId = this.getAttribute('data-member-id');
-            const date = this.getAttribute('data-date');
-            
-            if (confirm('Are you sure you want to remove this OOO entry for this specific day?')) {
-                fetch('/delete_ooo', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        member_id: memberId,
-                        date: date
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        alert('Error deleting OOO: ' + (data.error || 'Unknown error'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error deleting OOO');
-                });
-            }
-        });
     });
 });
 </script>
