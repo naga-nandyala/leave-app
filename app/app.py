@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
-from datetime import datetime, timedelta
+from datetime import datetime
 import json
 import os
-from collections import defaultdict
 import calendar
+import holidays
 
 app = Flask(__name__)
 app.secret_key = "your-secret-key-change-this"
@@ -17,6 +17,468 @@ HISTORY_FILE = os.path.join(DATA_DIR, "history.json")
 
 # Ensure data directory exists
 os.makedirs(DATA_DIR, exist_ok=True)
+
+# Top 10 world economies plus Australia
+TOP_10_ECONOMIES = {
+    "US": "United States",
+    "CN": "China",
+    "JP": "Japan",
+    "DE": "Germany",
+    "IN": "India",
+    "GB": "United Kingdom",
+    "FR": "France",
+    "IT": "Italy",
+    "BR": "Brazil",
+    "CA": "Canada",
+    "AU": "Australia",
+}
+
+# Mapping from country names to country codes for holidays library
+COUNTRY_CODE_MAP = {
+    "United States": "US",
+    "China": "CN",
+    "Japan": "JP",
+    "Germany": "DE",
+    "India": "IN",
+    "United Kingdom": "GB",
+    "France": "FR",
+    "Italy": "IT",
+    "Brazil": "BR",
+    "Canada": "CA",
+    "Australia": "AU",  # Adding Australia as it's in the existing data
+}
+
+# State/Province mappings for major countries
+REGIONS_MAP = {
+    "United States": [
+        "Alabama",
+        "Alaska",
+        "Arizona",
+        "Arkansas",
+        "California",
+        "Colorado",
+        "Connecticut",
+        "Delaware",
+        "Florida",
+        "Georgia",
+        "Hawaii",
+        "Idaho",
+        "Illinois",
+        "Indiana",
+        "Iowa",
+        "Kansas",
+        "Kentucky",
+        "Louisiana",
+        "Maine",
+        "Maryland",
+        "Massachusetts",
+        "Michigan",
+        "Minnesota",
+        "Mississippi",
+        "Missouri",
+        "Montana",
+        "Nebraska",
+        "Nevada",
+        "New Hampshire",
+        "New Jersey",
+        "New Mexico",
+        "New York",
+        "North Carolina",
+        "North Dakota",
+        "Ohio",
+        "Oklahoma",
+        "Oregon",
+        "Pennsylvania",
+        "Rhode Island",
+        "South Carolina",
+        "South Dakota",
+        "Tennessee",
+        "Texas",
+        "Utah",
+        "Vermont",
+        "Virginia",
+        "Washington",
+        "West Virginia",
+        "Wisconsin",
+        "Wyoming",
+    ],
+    "Canada": [
+        "Alberta",
+        "British Columbia",
+        "Manitoba",
+        "New Brunswick",
+        "Newfoundland and Labrador",
+        "Northwest Territories",
+        "Nova Scotia",
+        "Nunavut",
+        "Ontario",
+        "Prince Edward Island",
+        "Quebec",
+        "Saskatchewan",
+        "Yukon",
+    ],
+    "Australia": [
+        "Australian Capital Territory",
+        "New South Wales",
+        "Northern Territory",
+        "Queensland",
+        "South Australia",
+        "Tasmania",
+        "Victoria",
+        "Western Australia",
+    ],
+    "India": [
+        "Andhra Pradesh",
+        "Arunachal Pradesh",
+        "Assam",
+        "Bihar",
+        "Chhattisgarh",
+        "Goa",
+        "Gujarat",
+        "Haryana",
+        "Himachal Pradesh",
+        "Jharkhand",
+        "Karnataka",
+        "Kerala",
+        "Madhya Pradesh",
+        "Maharashtra",
+        "Manipur",
+        "Meghalaya",
+        "Mizoram",
+        "Nagaland",
+        "Odisha",
+        "Punjab",
+        "Rajasthan",
+        "Sikkim",
+        "Tamil Nadu",
+        "Telangana",
+        "Tripura",
+        "Uttar Pradesh",
+        "Uttarakhand",
+        "West Bengal",
+    ],
+    "Germany": [
+        "Baden-Württemberg",
+        "Bavaria",
+        "Berlin",
+        "Brandenburg",
+        "Bremen",
+        "Hamburg",
+        "Hesse",
+        "Lower Saxony",
+        "Mecklenburg-Vorpommern",
+        "North Rhine-Westphalia",
+        "Rhineland-Palatinate",
+        "Saarland",
+        "Saxony",
+        "Saxony-Anhalt",
+        "Schleswig-Holstein",
+        "Thuringia",
+    ],
+    "United Kingdom": ["England", "Scotland", "Wales", "Northern Ireland"],
+    "China": [
+        "Beijing",
+        "Shanghai",
+        "Tianjin",
+        "Chongqing",
+        "Guangdong",
+        "Jiangsu",
+        "Shandong",
+        "Zhejiang",
+        "Henan",
+        "Sichuan",
+        "Hubei",
+        "Hunan",
+        "Anhui",
+        "Hebei",
+        "Jiangxi",
+        "Shanxi",
+        "Liaoning",
+        "Fujian",
+        "Yunnan",
+        "Guangxi",
+        "Jilin",
+        "Guizhou",
+        "Gansu",
+        "Inner Mongolia",
+        "Shaanxi",
+        "Heilongjiang",
+        "Xinjiang",
+        "Tibet",
+        "Qinghai",
+        "Hainan",
+        "Ningxia",
+    ],
+    "Japan": [
+        "Hokkaido",
+        "Aomori",
+        "Iwate",
+        "Miyagi",
+        "Akita",
+        "Yamagata",
+        "Fukushima",
+        "Ibaraki",
+        "Tochigi",
+        "Gunma",
+        "Saitama",
+        "Chiba",
+        "Tokyo",
+        "Kanagawa",
+        "Niigata",
+        "Toyama",
+        "Ishikawa",
+        "Fukui",
+        "Yamanashi",
+        "Nagano",
+        "Gifu",
+        "Shizuoka",
+        "Aichi",
+        "Mie",
+        "Shiga",
+        "Kyoto",
+        "Osaka",
+        "Hyogo",
+        "Nara",
+        "Wakayama",
+        "Tottori",
+        "Shimane",
+        "Okayama",
+        "Hiroshima",
+        "Yamaguchi",
+        "Tokushima",
+        "Kagawa",
+        "Ehime",
+        "Kochi",
+        "Fukuoka",
+        "Saga",
+        "Nagasaki",
+        "Kumamoto",
+        "Oita",
+        "Miyazaki",
+        "Kagoshima",
+        "Okinawa",
+    ],
+    "France": [
+        "Auvergne-Rhône-Alpes",
+        "Bourgogne-Franche-Comté",
+        "Brittany",
+        "Centre-Val de Loire",
+        "Corsica",
+        "Grand Est",
+        "Hauts-de-France",
+        "Île-de-France",
+        "Normandy",
+        "Nouvelle-Aquitaine",
+        "Occitanie",
+        "Pays de la Loire",
+        "Provence-Alpes-Côte d'Azur",
+    ],
+    "Italy": [
+        "Abruzzo",
+        "Basilicata",
+        "Calabria",
+        "Campania",
+        "Emilia-Romagna",
+        "Friuli-Venezia Giulia",
+        "Lazio",
+        "Liguria",
+        "Lombardy",
+        "Marche",
+        "Molise",
+        "Piedmont",
+        "Apulia",
+        "Sardinia",
+        "Sicily",
+        "Tuscany",
+        "Trentino-Alto Adige/Südtirol",
+        "Umbria",
+        "Aosta Valley",
+        "Veneto",
+    ],
+    "Brazil": [
+        "Acre",
+        "Alagoas",
+        "Amapá",
+        "Amazonas",
+        "Bahia",
+        "Ceará",
+        "Distrito Federal",
+        "Espírito Santo",
+        "Goiás",
+        "Maranhão",
+        "Mato Grosso",
+        "Mato Grosso do Sul",
+        "Minas Gerais",
+        "Pará",
+        "Paraíba",
+        "Paraná",
+        "Pernambuco",
+        "Piauí",
+        "Rio de Janeiro",
+        "Rio Grande do Norte",
+        "Rio Grande do Sul",
+        "Rondônia",
+        "Roraima",
+        "Santa Catarina",
+        "São Paulo",
+        "Sergipe",
+        "Tocantins",
+    ],
+}
+
+
+def populate_holidays_for_country(country, region=None, year=2025):
+    """Populate holidays for a given country and region using the holidays library"""
+    holidays_data = get_holidays()
+
+    # Initialize structure if needed
+    if "national" not in holidays_data:
+        holidays_data["national"] = {}
+    if "regional" not in holidays_data:
+        holidays_data["regional"] = {}
+
+    # Get country code for holidays library
+    country_code = COUNTRY_CODE_MAP.get(country)
+    if not country_code:
+        return holidays_data
+
+    try:
+        # Get national holidays
+        if country not in holidays_data["national"]:
+            holidays_data["national"][country] = {}
+
+        country_holidays = holidays.country_holidays(country_code, years=year)
+        for date, name in country_holidays.items():
+            date_str = date.strftime("%Y-%m-%d")
+            holidays_data["national"][country][date_str] = name
+
+        # Get regional holidays if region is provided and supported
+        if region:
+            if country not in holidays_data["regional"]:
+                holidays_data["regional"][country] = {}
+            if region not in holidays_data["regional"][country]:
+                holidays_data["regional"][country][region] = {}
+
+            # Try to get state/province specific holidays
+            try:
+                # For some countries, the holidays library supports state/province codes
+                if country_code == "US":
+                    # Map full state names to abbreviations for US states
+                    state_abbrev_map = {
+                        "Alabama": "AL",
+                        "Alaska": "AK",
+                        "Arizona": "AZ",
+                        "Arkansas": "AR",
+                        "California": "CA",
+                        "Colorado": "CO",
+                        "Connecticut": "CT",
+                        "Delaware": "DE",
+                        "Florida": "FL",
+                        "Georgia": "GA",
+                        "Hawaii": "HI",
+                        "Idaho": "ID",
+                        "Illinois": "IL",
+                        "Indiana": "IN",
+                        "Iowa": "IA",
+                        "Kansas": "KS",
+                        "Kentucky": "KY",
+                        "Louisiana": "LA",
+                        "Maine": "ME",
+                        "Maryland": "MD",
+                        "Massachusetts": "MA",
+                        "Michigan": "MI",
+                        "Minnesota": "MN",
+                        "Mississippi": "MS",
+                        "Missouri": "MO",
+                        "Montana": "MT",
+                        "Nebraska": "NE",
+                        "Nevada": "NV",
+                        "New Hampshire": "NH",
+                        "New Jersey": "NJ",
+                        "New Mexico": "NM",
+                        "New York": "NY",
+                        "North Carolina": "NC",
+                        "North Dakota": "ND",
+                        "Ohio": "OH",
+                        "Oklahoma": "OK",
+                        "Oregon": "OR",
+                        "Pennsylvania": "PA",
+                        "Rhode Island": "RI",
+                        "South Carolina": "SC",
+                        "South Dakota": "SD",
+                        "Tennessee": "TN",
+                        "Texas": "TX",
+                        "Utah": "UT",
+                        "Vermont": "VT",
+                        "Virginia": "VA",
+                        "Washington": "WA",
+                        "West Virginia": "WV",
+                        "Wisconsin": "WI",
+                        "Wyoming": "WY",
+                    }
+                    state_code = state_abbrev_map.get(region)
+                    if state_code:
+                        regional_holidays = holidays.country_holidays(country_code, state=state_code, years=year)
+                        for date, name in regional_holidays.items():
+                            date_str = date.strftime("%Y-%m-%d")
+                            # Only add if it's not already a national holiday
+                            if date_str not in holidays_data["national"][country]:
+                                holidays_data["regional"][country][region][date_str] = name
+
+                elif country_code == "AU":
+                    # Map full state names to abbreviations for Australian states
+                    state_abbrev_map = {
+                        "Australian Capital Territory": "ACT",
+                        "New South Wales": "NSW",
+                        "Northern Territory": "NT",
+                        "Queensland": "QLD",
+                        "South Australia": "SA",
+                        "Tasmania": "TAS",
+                        "Victoria": "VIC",
+                        "Western Australia": "WA",
+                    }
+                    state_code = state_abbrev_map.get(region)
+                    if state_code:
+                        regional_holidays = holidays.country_holidays(country_code, state=state_code, years=year)
+                        for date, name in regional_holidays.items():
+                            date_str = date.strftime("%Y-%m-%d")
+                            # Only add if it's not already a national holiday
+                            if date_str not in holidays_data["national"][country]:
+                                holidays_data["regional"][country][region][date_str] = name
+
+                elif country_code == "CA":
+                    # Map full province names to abbreviations for Canadian provinces
+                    province_abbrev_map = {
+                        "Alberta": "AB",
+                        "British Columbia": "BC",
+                        "Manitoba": "MB",
+                        "New Brunswick": "NB",
+                        "Newfoundland and Labrador": "NL",
+                        "Northwest Territories": "NT",
+                        "Nova Scotia": "NS",
+                        "Nunavut": "NU",
+                        "Ontario": "ON",
+                        "Prince Edward Island": "PE",
+                        "Quebec": "QC",
+                        "Saskatchewan": "SK",
+                        "Yukon": "YT",
+                    }
+                    province_code = province_abbrev_map.get(region)
+                    if province_code:
+                        regional_holidays = holidays.country_holidays(country_code, prov=province_code, years=year)
+                        for date, name in regional_holidays.items():
+                            date_str = date.strftime("%Y-%m-%d")
+                            # Only add if it's not already a national holiday
+                            if date_str not in holidays_data["national"][country]:
+                                holidays_data["regional"][country][region][date_str] = name
+
+            except Exception as e:
+                print(f"Could not get regional holidays for {region}, {country}: {e}")
+
+    except Exception as e:
+        print(f"Could not get holidays for {country}: {e}")
+
+    return holidays_data
 
 
 def load_data(filename, default=None):
@@ -56,9 +518,9 @@ def get_history():
     return load_data(HISTORY_FILE, [])
 
 
-def save_holidays(holidays):
+def save_holidays(holidays_data):
     """Save holidays data"""
-    save_data(HOLIDAYS_FILE, holidays)
+    save_data(HOLIDAYS_FILE, holidays_data)
 
 
 def save_members(members):
@@ -99,17 +561,17 @@ def log_operation(operation_type, member_id, details, member_name=None):
 
 def is_holiday(date_str, country, region=None):
     """Check if a date is a holiday for given country/region"""
-    holidays = get_holidays()
+    holidays_data = get_holidays()
 
     # Check national holidays
-    if country in holidays.get("national", {}):
-        if date_str in holidays["national"][country]:
+    if country in holidays_data.get("national", {}):
+        if date_str in holidays_data["national"][country]:
             return True
 
     # Check regional holidays
-    if region and country in holidays.get("regional", {}):
-        if region in holidays["regional"][country]:
-            if date_str in holidays["regional"][country][region]:
+    if region and country in holidays_data.get("regional", {}):
+        if region in holidays_data["regional"][country]:
+            if date_str in holidays_data["regional"][country][region]:
                 return True
 
     return False
@@ -117,18 +579,18 @@ def is_holiday(date_str, country, region=None):
 
 def get_holiday_name(date_str, country, region=None):
     """Get the name of the holiday for a given date and location"""
-    holidays = get_holidays()
+    holidays_data = get_holidays()
 
     # Check regional holidays first (more specific)
-    if region and country in holidays.get("regional", {}):
-        if region in holidays["regional"][country]:
-            if date_str in holidays["regional"][country][region]:
-                return holidays["regional"][country][region][date_str]
+    if region and country in holidays_data.get("regional", {}):
+        if region in holidays_data["regional"][country]:
+            if date_str in holidays_data["regional"][country][region]:
+                return holidays_data["regional"][country][region][date_str]
 
     # Check national holidays
-    if country in holidays.get("national", {}):
-        if date_str in holidays["national"][country]:
-            return holidays["national"][country][date_str]
+    if country in holidays_data.get("national", {}):
+        if date_str in holidays_data["national"][country]:
+            return holidays_data["national"][country][date_str]
 
     return None
 
@@ -219,7 +681,16 @@ def index():
 def members():
     """Manage team members"""
     members_data = get_members()
-    return render_template("members.html", members=members_data)
+    return render_template(
+        "members.html", members=members_data, top_economies=TOP_10_ECONOMIES, regions_map=REGIONS_MAP
+    )
+
+
+@app.route("/api/regions/<country>")
+def get_regions(country):
+    """Get regions/states for a specific country"""
+    regions = REGIONS_MAP.get(country, [])
+    return jsonify(regions)
 
 
 @app.route("/add_member", methods=["POST"])
@@ -236,15 +707,24 @@ def add_member():
 
     save_members(members_data)
 
+    # Populate holidays for the new member's country and region
+    holidays_data = populate_holidays_for_country(country, region)
+    save_holidays(holidays_data)
+
     # Log the operation
     log_operation("ADD_MEMBER", member_id, f"Added member: {name} from {country}, {region}", name)
 
-    flash("Member added successfully!", "success")
+    flash(
+        f"Member added successfully! Holidays for {country}"
+        + (f", {region}" if region else "")
+        + " have been populated.",
+        "success",
+    )
     return redirect(url_for("members"))
 
 
 @app.route("/holidays")
-def holidays():
+def holidays_page():
     """Manage holidays"""
     holidays_data = get_holidays()
     return render_template("holidays.html", holidays=holidays_data)
@@ -291,7 +771,7 @@ def add_holiday():
     log_operation("ADD_HOLIDAY", None, f"Added holiday: {name} on {date_str} for {location}", "System")
 
     flash("Holiday added successfully!", "success")
-    return redirect(url_for("holidays"))
+    return redirect(url_for("holidays_page"))
 
 
 @app.route("/add_ooo", methods=["POST"])

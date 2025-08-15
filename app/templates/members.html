@@ -23,19 +23,19 @@
                     </div>
                     <div class="mb-3">
                         <label for="country" class="form-label">Country</label>
-                        <select class="form-control" id="country" name="country" required>
-                            <option value="">Select Country</option>
+                        <select class="form-control" id="country" name="country" required onchange="populateRegions()">
+                            <option value="">Select Country (Top 10 Economies)</option>
+                            {% for code, name in top_economies.items() %}
+                            <option value="{{ name }}">{{ name }}</option>
+                            {% endfor %}
                             <option value="Australia">Australia</option>
-                            <option value="China">China</option>
-                            <option value="USA">USA</option>
-                            <option value="India">India</option>
-                            <option value="UK">United Kingdom</option>
-                            <option value="Canada">Canada</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="region" class="form-label">Region/State (Optional)</label>
-                        <input type="text" class="form-control" id="region" name="region" placeholder="e.g., NSW, California, Beijing">
+                        <label for="region" class="form-label">Region/State/Province</label>
+                        <select class="form-control" id="region" name="region">
+                            <option value="">Select Region (Optional)</option>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Member</button>
                 </form>
@@ -77,4 +77,28 @@
         </div>
     </div>
 </div>
+
+<script>
+// Regions mapping passed from backend
+const regionsMap = {{ regions_map | tojson }};
+
+function populateRegions() {
+    const countrySelect = document.getElementById('country');
+    const regionSelect = document.getElementById('region');
+    const selectedCountry = countrySelect.value;
+    
+    // Clear existing regions
+    regionSelect.innerHTML = '<option value="">Select Region (Optional)</option>';
+    
+    // Populate regions for selected country
+    if (selectedCountry && regionsMap[selectedCountry]) {
+        regionsMap[selectedCountry].forEach(function(region) {
+            const option = document.createElement('option');
+            option.value = region;
+            option.textContent = region;
+            regionSelect.appendChild(option);
+        });
+    }
+}
+</script>
 {% endblock %}

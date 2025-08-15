@@ -110,5 +110,33 @@
     "member_id": "5",
     "member_name": "Hang",
     "details": "Added OOO (Vacation) for 2025-09-15"
+  },
+  {
+    "timestamp": "2025-08-16 06:49:43",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "7",
+    "member_name": "India1",
+    "details": "Added member: India1 from India, Andhra Pradesh"
+  },
+  {
+    "timestamp": "2025-08-16 06:50:39",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "8",
+    "member_name": "Brisbane1",
+    "details": "Added member: Brisbane1 from Australia, Queensland"
+  },
+  {
+    "timestamp": "2025-08-16 06:51:00",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "9",
+    "member_name": "Tas1",
+    "details": "Added member: Tas1 from Australia, Tasmania"
+  },
+  {
+    "timestamp": "2025-08-16 06:51:39",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "10",
+    "member_name": "Torronto1",
+    "details": "Added member: Torronto1 from Canada, Ontario"
   }
 ]
