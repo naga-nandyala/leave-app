@@ -10,9 +10,15 @@
                 <h2>{{ month_name }} {{ year }}</h2>
                 <p class="text-muted mb-0">Showing only team members who are out of office</p>
             </div>
-            <div>
-                <a href="{{ url_for('index', year=year if month > 1 else year-1, month=month-1 if month > 1 else 12) }}" class="btn btn-outline-primary">&lt; Previous</a>
-                <a href="{{ url_for('index', year=year if month < 12 else year+1, month=month+1 if month < 12 else 1) }}" class="btn btn-outline-primary">Next &gt;</a>
+            <div class="calendar-nav">
+                <!-- Month Navigation -->
+                <a href="{{ url_for('index', year=year if month > 1 else year-1, month=month-1 if month > 1 else 12) }}" class="btn btn-outline-primary" title="Previous Month">&lt;</a>
+                
+                <!-- Current Date Display -->
+                <span class="mx-3 fw-bold text-center" style="min-width: 150px;">{{ month_name }} {{ year }}</span>
+                
+                <!-- Month Navigation -->
+                <a href="{{ url_for('index', year=year if month < 12 else year+1, month=month+1 if month < 12 else 1) }}" class="btn btn-outline-primary" title="Next Month">&gt;</a>
             </div>
         </div>
     </div>
@@ -53,9 +59,9 @@
                                                     <small>
                                                         {% if avail_info.reason.startswith('OOO:') %}
                                                             <div class="d-flex justify-content-between align-items-center">
-                                                                <span>{{ member.name }} | OOO</span>
+                                                                <span>{{ member.name }} | OOO | {{ avail_info.reason.replace('OOO: ', '') }}</span>
                                                                 <div>
-                                                                    <button class="btn btn-xs btn-outline-info view-ooo-btn" data-member-id="{{ member_id }}" data-date="{{ date_str }}" title="View/Edit OOO">✎</button>
+                                                                    <button class="btn btn-xs btn-outline-info view-ooo-btn" data-member-id="{{ member_id }}" data-date="{{ date_str }}" title="View/Cancel Entry">✕</button>
                                                                 </div>
                                                             </div>
                                                         {% else %}
@@ -86,7 +92,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                         <div class="d-flex align-items-center mb-2">
                             <div class="member-status ooo-status d-inline-block me-3" style="min-width: 120px;">Out of Office</div>
                             <span>Team members on vacation, sick leave, or personal time</span>
@@ -95,9 +101,6 @@
                             <div class="member-status holiday-status d-inline-block me-3" style="min-width: 120px;">Public Holiday</div>
                             <span>Team members observing national or regional holidays</span>
                         </div>
-                    </div>
-                    <div class="col-md-2">
-                        <p class="text-muted mb-0"><small>Note: Only showing employees who are out of office</small></p>
                     </div>
                 </div>
             </div>
@@ -155,7 +158,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewOOOModalLabel">Out of Office Details</h5>
+                <h5 class="modal-title" id="viewOOOModalLabel">View/Cancel Entry</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -165,7 +168,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" id="cancelVacationBtn">Cancel Entire Vacation</button>
+                <button type="button" class="btn btn-danger" id="cancelVacationBtn">Cancel Entry</button>
             </div>
         </div>
     </div>
@@ -266,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Cancel entire vacation functionality
     document.getElementById('cancelVacationBtn').addEventListener('click', function() {
-        if (currentOOODetails && confirm('Are you sure you want to cancel this entire vacation/OOO period?')) {
+        if (currentOOODetails && confirm('Are you sure you want to cancel this entry?')) {
             fetch('/cancel_vacation', {
                 method: 'POST',
                 headers: {

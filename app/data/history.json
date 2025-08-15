@@ -68,5 +68,33 @@
     "member_id": "2",
     "member_name": "Anuj",
     "details": "Canceled vacation (Vacation) for 2025-09-30"
+  },
+  {
+    "timestamp": "2025-08-16 06:14:15",
+    "operation_type": "CANCEL_VACATION",
+    "member_id": "1",
+    "member_name": "Naga",
+    "details": "Canceled vacation (Training) for 2025-09-15"
+  },
+  {
+    "timestamp": "2025-08-16 06:27:02",
+    "operation_type": "ADD_OOO",
+    "member_id": "1",
+    "member_name": "Naga",
+    "details": "Added OOO (Conference) for 2025-08-27"
+  },
+  {
+    "timestamp": "2025-08-16 06:29:47",
+    "operation_type": "ADD_OOO",
+    "member_id": "1",
+    "member_name": "Naga",
+    "details": "Added OOO (Personal) for 2025-09-15"
+  },
+  {
+    "timestamp": "2025-08-16 06:29:54",
+    "operation_type": "ADD_OOO",
+    "member_id": "3",
+    "member_name": "Teresa",
+    "details": "Added OOO (Conference) for 2025-09-15"
   }
 ]
