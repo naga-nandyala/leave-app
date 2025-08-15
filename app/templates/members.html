@@ -24,11 +24,10 @@
                     <div class="mb-3">
                         <label for="country" class="form-label">Country</label>
                         <select class="form-control" id="country" name="country" required onchange="populateRegions()">
-                            <option value="">Select Country (Top 10 Economies)</option>
-                            {% for code, name in top_economies.items() %}
+                            <option value="">Select Country</option>
+                            {% for code, name in top_economies.items() | sort(attribute=1) %}
                             <option value="{{ name }}">{{ name }}</option>
                             {% endfor %}
-                            <option value="Australia">Australia</option>
                         </select>
                     </div>
                     <div class="mb-3">

@@ -1,0 +1,20 @@
+{
+    "countries": {
+        "AU": {
+            "name": "Australia",
+            "code": "AU"
+        },
+        "CN": {
+            "name": "China",
+            "code": "CN"
+        },
+        "US": {
+            "name": "United States",
+            "code": "US"
+        },
+        "CA": {
+            "name": "Canada",
+            "code": "CA"
+        }
+    }
+}

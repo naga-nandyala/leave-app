@@ -10,321 +10,82 @@ app.secret_key = "your-secret-key-change-this"
 
 # Data storage (in production, use a proper database)
 DATA_DIR = "data"
+CONFIG_DIR = "config"
 HOLIDAYS_FILE = os.path.join(DATA_DIR, "holidays.json")
 MEMBERS_FILE = os.path.join(DATA_DIR, "members.json")
 OOO_FILE = os.path.join(DATA_DIR, "ooo.json")
 HISTORY_FILE = os.path.join(DATA_DIR, "history.json")
+COUNTRIES_CONFIG_FILE = os.path.join(CONFIG_DIR, "countries.json")
 
-# Ensure data directory exists
+# Ensure directories exist
 os.makedirs(DATA_DIR, exist_ok=True)
+os.makedirs(CONFIG_DIR, exist_ok=True)
 
-# Top 10 world economies plus Australia
-TOP_10_ECONOMIES = {
-    "US": "United States",
-    "CN": "China",
-    "JP": "Japan",
-    "DE": "Germany",
-    "IN": "India",
-    "GB": "United Kingdom",
-    "FR": "France",
-    "IT": "Italy",
-    "BR": "Brazil",
-    "CA": "Canada",
-    "AU": "Australia",
-}
 
-# Mapping from country names to country codes for holidays library
-COUNTRY_CODE_MAP = {
-    "United States": "US",
-    "China": "CN",
-    "Japan": "JP",
-    "Germany": "DE",
-    "India": "IN",
-    "United Kingdom": "GB",
-    "France": "FR",
-    "Italy": "IT",
-    "Brazil": "BR",
-    "Canada": "CA",
-    "Australia": "AU",  # Adding Australia as it's in the existing data
-}
+def load_countries_config():
+    """Load countries configuration from JSON file"""
+    try:
+        with open(COUNTRIES_CONFIG_FILE, "r", encoding="utf-8") as f:
+            config = json.load(f)
+            return config["countries"]
+    except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
+        print(f"Error loading countries config: {e}")
+        # Return default config if file is missing or corrupted
+        return {
+            "AU": {"name": "Australia", "code": "AU"},
+            "CN": {"name": "China", "code": "CN"},
+            "US": {"name": "United States", "code": "US"},
+        }
 
-# State/Province mappings for major countries
-REGIONS_MAP = {
-    "United States": [
-        "Alabama",
-        "Alaska",
-        "Arizona",
-        "Arkansas",
-        "California",
-        "Colorado",
-        "Connecticut",
-        "Delaware",
-        "Florida",
-        "Georgia",
-        "Hawaii",
-        "Idaho",
-        "Illinois",
-        "Indiana",
-        "Iowa",
-        "Kansas",
-        "Kentucky",
-        "Louisiana",
-        "Maine",
-        "Maryland",
-        "Massachusetts",
-        "Michigan",
-        "Minnesota",
-        "Mississippi",
-        "Missouri",
-        "Montana",
-        "Nebraska",
-        "Nevada",
-        "New Hampshire",
-        "New Jersey",
-        "New Mexico",
-        "New York",
-        "North Carolina",
-        "North Dakota",
-        "Ohio",
-        "Oklahoma",
-        "Oregon",
-        "Pennsylvania",
-        "Rhode Island",
-        "South Carolina",
-        "South Dakota",
-        "Tennessee",
-        "Texas",
-        "Utah",
-        "Vermont",
-        "Virginia",
-        "Washington",
-        "West Virginia",
-        "Wisconsin",
-        "Wyoming",
-    ],
-    "Canada": [
-        "Alberta",
-        "British Columbia",
-        "Manitoba",
-        "New Brunswick",
-        "Newfoundland and Labrador",
-        "Northwest Territories",
-        "Nova Scotia",
-        "Nunavut",
-        "Ontario",
-        "Prince Edward Island",
-        "Quebec",
-        "Saskatchewan",
-        "Yukon",
-    ],
-    "Australia": [
-        "Australian Capital Territory",
-        "New South Wales",
-        "Northern Territory",
-        "Queensland",
-        "South Australia",
-        "Tasmania",
-        "Victoria",
-        "Western Australia",
-    ],
-    "India": [
-        "Andhra Pradesh",
-        "Arunachal Pradesh",
-        "Assam",
-        "Bihar",
-        "Chhattisgarh",
-        "Goa",
-        "Gujarat",
-        "Haryana",
-        "Himachal Pradesh",
-        "Jharkhand",
-        "Karnataka",
-        "Kerala",
-        "Madhya Pradesh",
-        "Maharashtra",
-        "Manipur",
-        "Meghalaya",
-        "Mizoram",
-        "Nagaland",
-        "Odisha",
-        "Punjab",
-        "Rajasthan",
-        "Sikkim",
-        "Tamil Nadu",
-        "Telangana",
-        "Tripura",
-        "Uttar Pradesh",
-        "Uttarakhand",
-        "West Bengal",
-    ],
-    "Germany": [
-        "Baden-Württemberg",
-        "Bavaria",
-        "Berlin",
-        "Brandenburg",
-        "Bremen",
-        "Hamburg",
-        "Hesse",
-        "Lower Saxony",
-        "Mecklenburg-Vorpommern",
-        "North Rhine-Westphalia",
-        "Rhineland-Palatinate",
-        "Saarland",
-        "Saxony",
-        "Saxony-Anhalt",
-        "Schleswig-Holstein",
-        "Thuringia",
-    ],
-    "United Kingdom": ["England", "Scotland", "Wales", "Northern Ireland"],
-    "China": [
-        "Beijing",
-        "Shanghai",
-        "Tianjin",
-        "Chongqing",
-        "Guangdong",
-        "Jiangsu",
-        "Shandong",
-        "Zhejiang",
-        "Henan",
-        "Sichuan",
-        "Hubei",
-        "Hunan",
-        "Anhui",
-        "Hebei",
-        "Jiangxi",
-        "Shanxi",
-        "Liaoning",
-        "Fujian",
-        "Yunnan",
-        "Guangxi",
-        "Jilin",
-        "Guizhou",
-        "Gansu",
-        "Inner Mongolia",
-        "Shaanxi",
-        "Heilongjiang",
-        "Xinjiang",
-        "Tibet",
-        "Qinghai",
-        "Hainan",
-        "Ningxia",
-    ],
-    "Japan": [
-        "Hokkaido",
-        "Aomori",
-        "Iwate",
-        "Miyagi",
-        "Akita",
-        "Yamagata",
-        "Fukushima",
-        "Ibaraki",
-        "Tochigi",
-        "Gunma",
-        "Saitama",
-        "Chiba",
-        "Tokyo",
-        "Kanagawa",
-        "Niigata",
-        "Toyama",
-        "Ishikawa",
-        "Fukui",
-        "Yamanashi",
-        "Nagano",
-        "Gifu",
-        "Shizuoka",
-        "Aichi",
-        "Mie",
-        "Shiga",
-        "Kyoto",
-        "Osaka",
-        "Hyogo",
-        "Nara",
-        "Wakayama",
-        "Tottori",
-        "Shimane",
-        "Okayama",
-        "Hiroshima",
-        "Yamaguchi",
-        "Tokushima",
-        "Kagawa",
-        "Ehime",
-        "Kochi",
-        "Fukuoka",
-        "Saga",
-        "Nagasaki",
-        "Kumamoto",
-        "Oita",
-        "Miyazaki",
-        "Kagoshima",
-        "Okinawa",
-    ],
-    "France": [
-        "Auvergne-Rhône-Alpes",
-        "Bourgogne-Franche-Comté",
-        "Brittany",
-        "Centre-Val de Loire",
-        "Corsica",
-        "Grand Est",
-        "Hauts-de-France",
-        "Île-de-France",
-        "Normandy",
-        "Nouvelle-Aquitaine",
-        "Occitanie",
-        "Pays de la Loire",
-        "Provence-Alpes-Côte d'Azur",
-    ],
-    "Italy": [
-        "Abruzzo",
-        "Basilicata",
-        "Calabria",
-        "Campania",
-        "Emilia-Romagna",
-        "Friuli-Venezia Giulia",
-        "Lazio",
-        "Liguria",
-        "Lombardy",
-        "Marche",
-        "Molise",
-        "Piedmont",
-        "Apulia",
-        "Sardinia",
-        "Sicily",
-        "Tuscany",
-        "Trentino-Alto Adige/Südtirol",
-        "Umbria",
-        "Aosta Valley",
-        "Veneto",
-    ],
-    "Brazil": [
-        "Acre",
-        "Alagoas",
-        "Amapá",
-        "Amazonas",
-        "Bahia",
-        "Ceará",
-        "Distrito Federal",
-        "Espírito Santo",
-        "Goiás",
-        "Maranhão",
-        "Mato Grosso",
-        "Mato Grosso do Sul",
-        "Minas Gerais",
-        "Pará",
-        "Paraíba",
-        "Paraná",
-        "Pernambuco",
-        "Piauí",
-        "Rio de Janeiro",
-        "Rio Grande do Norte",
-        "Rio Grande do Sul",
-        "Rondônia",
-        "Roraima",
-        "Santa Catarina",
-        "São Paulo",
-        "Sergipe",
-        "Tocantins",
-    ],
-}
+
+def get_supported_regions(country_code):
+    """Get supported regions/states for a country from the holidays library"""
+    try:
+        # Get country holidays object
+        country_holidays = holidays.country_holidays(country_code)
+
+        # Check if the country has subdivisions/states
+        if hasattr(country_holidays, "subdivisions") and country_holidays.subdivisions:
+            # Check if there are subdivision aliases (full names)
+            if hasattr(country_holidays, "subdivisions_aliases") and country_holidays.subdivisions_aliases:
+                aliases = country_holidays.subdivisions_aliases
+                # Return list of full names (keys from aliases dict), sorted
+                return sorted(list(aliases.keys()))
+            else:
+                # Return subdivision codes if no aliases available, sorted
+                return sorted(list(country_holidays.subdivisions))
+        else:
+            return []
+    except Exception as e:
+        print(f"Could not get regions for {country_code}: {e}")
+        return []
+
+
+def generate_regions_map():
+    """Generate regions map dynamically from holidays library"""
+    regions_map = {}
+
+    for country_data in COUNTRIES_CONFIG.values():
+        country_name = country_data["name"]
+        country_code = country_data["code"]
+
+        # Get regions from holidays library
+        regions = get_supported_regions(country_code)
+
+        regions_map[country_name] = sorted(regions)
+
+    return regions_map
+
+
+# Load countries configuration
+COUNTRIES_CONFIG = load_countries_config()
+
+# Create backwards compatible dictionaries
+TOP_10_ECONOMIES = {code: country_data["name"] for code, country_data in COUNTRIES_CONFIG.items()}
+COUNTRY_CODE_MAP = {country_data["name"]: country_data["code"] for country_data in COUNTRIES_CONFIG.values()}
+
+# Generate regions map dynamically from holidays library
+REGIONS_MAP = generate_regions_map()
 
 
 def populate_holidays_for_country(country, region=None, year=2025):
@@ -727,7 +488,9 @@ def add_member():
 def holidays_page():
     """Manage holidays"""
     holidays_data = get_holidays()
-    return render_template("holidays.html", holidays=holidays_data)
+    # Sort countries alphabetically for display
+    sorted_countries = sorted(COUNTRIES_CONFIG.values(), key=lambda x: x['name'])
+    return render_template("holidays.html", holidays=holidays_data, countries=sorted_countries)
 
 
 @app.route("/history")

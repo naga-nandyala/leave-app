@@ -1,142 +1,30 @@
 [
   {
-    "timestamp": "2025-08-15 21:01:00",
-    "operation_type": "DELETE_OOO",
-    "member_id": "5",
-    "member_name": "Emma Brown",
-    "details": "Deleted OOO entry for 2025-08-29 (was Personal)"
-  },
-  {
-    "timestamp": "2025-08-15 21:06:36",
-    "operation_type": "ADD_OOO",
+    "timestamp": "2025-08-16 07:26:35",
+    "operation_type": "ADD_MEMBER",
     "member_id": "1",
     "member_name": "Naga",
-    "details": "Added OOO (Training) for 2025-09-15"
+    "details": "Added member: Naga from Australia, New South Wales"
   },
   {
-    "timestamp": "2025-08-15 21:06:50",
-    "operation_type": "ADD_OOO",
+    "timestamp": "2025-08-16 07:27:06",
+    "operation_type": "ADD_MEMBER",
     "member_id": "2",
     "member_name": "Anuj",
-    "details": "Added OOO (Sick Leave) for 2025-09-15"
+    "details": "Added member: Anuj from Australia, Victoria"
   },
   {
-    "timestamp": "2025-08-15 21:11:43",
-    "operation_type": "CANCEL_VACATION",
-    "member_id": "1",
-    "member_name": "Naga",
-    "details": "Canceled vacation (Vacation) from 2025-08-22 to 2025-08-26"
-  },
-  {
-    "timestamp": "2025-08-16 05:10:44",
-    "operation_type": "DELETE_OOO",
+    "timestamp": "2025-08-16 07:27:24",
+    "operation_type": "ADD_MEMBER",
     "member_id": "3",
-    "member_name": "Teresa",
-    "details": "Deleted OOO entry for 2025-09-16 (was Conference)"
-  },
-  {
-    "timestamp": "2025-08-16 05:11:16",
-    "operation_type": "ADD_OOO",
-    "member_id": "1",
-    "member_name": "Naga",
-    "details": "Added OOO (Vacation) from 2025-08-20 to 2025-08-28"
-  },
-  {
-    "timestamp": "2025-08-16 05:11:22",
-    "operation_type": "DELETE_OOO",
-    "member_id": "1",
-    "member_name": "Naga",
-    "details": "Deleted OOO entry for 2025-08-27 (was Vacation)"
-  },
-  {
-    "timestamp": "2025-08-16 05:13:17",
-    "operation_type": "CANCEL_VACATION",
-    "member_id": "6",
-    "member_name": "Jeffery",
-    "details": "Canceled vacation (Personal) from 2025-08-29 to 2025-08-31"
-  },
-  {
-    "timestamp": "2025-08-16 05:13:35",
-    "operation_type": "ADD_OOO",
-    "member_id": "2",
-    "member_name": "Anuj",
-    "details": "Added OOO (Vacation) for 2025-09-30"
-  },
-  {
-    "timestamp": "2025-08-16 05:13:40",
-    "operation_type": "CANCEL_VACATION",
-    "member_id": "2",
-    "member_name": "Anuj",
-    "details": "Canceled vacation (Vacation) for 2025-09-30"
-  },
-  {
-    "timestamp": "2025-08-16 06:14:15",
-    "operation_type": "CANCEL_VACATION",
-    "member_id": "1",
-    "member_name": "Naga",
-    "details": "Canceled vacation (Training) for 2025-09-15"
-  },
-  {
-    "timestamp": "2025-08-16 06:27:02",
-    "operation_type": "ADD_OOO",
-    "member_id": "1",
-    "member_name": "Naga",
-    "details": "Added OOO (Conference) for 2025-08-27"
-  },
-  {
-    "timestamp": "2025-08-16 06:29:47",
-    "operation_type": "ADD_OOO",
-    "member_id": "1",
-    "member_name": "Naga",
-    "details": "Added OOO (Personal) for 2025-09-15"
-  },
-  {
-    "timestamp": "2025-08-16 06:29:54",
-    "operation_type": "ADD_OOO",
-    "member_id": "3",
-    "member_name": "Teresa",
-    "details": "Added OOO (Conference) for 2025-09-15"
-  },
-  {
-    "timestamp": "2025-08-16 06:33:30",
-    "operation_type": "ADD_OOO",
-    "member_id": "4",
     "member_name": "Xing",
-    "details": "Added OOO (Vacation) for 2025-09-15"
+    "details": "Added member: Xing from China, "
   },
   {
-    "timestamp": "2025-08-16 06:33:35",
-    "operation_type": "ADD_OOO",
-    "member_id": "5",
-    "member_name": "Hang",
-    "details": "Added OOO (Vacation) for 2025-09-15"
-  },
-  {
-    "timestamp": "2025-08-16 06:49:43",
+    "timestamp": "2025-08-16 07:27:48",
     "operation_type": "ADD_MEMBER",
-    "member_id": "7",
-    "member_name": "India1",
-    "details": "Added member: India1 from India, Andhra Pradesh"
-  },
-  {
-    "timestamp": "2025-08-16 06:50:39",
-    "operation_type": "ADD_MEMBER",
-    "member_id": "8",
-    "member_name": "Brisbane1",
-    "details": "Added member: Brisbane1 from Australia, Queensland"
-  },
-  {
-    "timestamp": "2025-08-16 06:51:00",
-    "operation_type": "ADD_MEMBER",
-    "member_id": "9",
-    "member_name": "Tas1",
-    "details": "Added member: Tas1 from Australia, Tasmania"
-  },
-  {
-    "timestamp": "2025-08-16 06:51:39",
-    "operation_type": "ADD_MEMBER",
-    "member_id": "10",
-    "member_name": "Torronto1",
-    "details": "Added member: Torronto1 from Canada, Ontario"
+    "member_id": "4",
+    "member_name": "Jeffery",
+    "details": "Added member: Jeffery from United States, California"
   }
 ]

@@ -27,19 +27,18 @@
                     </div>
                     <div class="mb-3">
                         <label for="country" class="form-label">Country</label>
-                        <select class="form-control" id="country" name="country" required>
+                        <select class="form-control" id="country" name="country" required onchange="populateRegions()">
                             <option value="">Select Country</option>
-                            <option value="Australia">Australia</option>
-                            <option value="China">China</option>
-                            <option value="USA">USA</option>
-                            <option value="India">India</option>
-                            <option value="UK">United Kingdom</option>
-                            <option value="Canada">Canada</option>
+                            {% for country in countries %}
+                                <option value="{{ country.name }}">{{ country.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="region" class="form-label">Region/State (Optional)</label>
-                        <input type="text" class="form-control" id="region" name="region" placeholder="Leave empty for national holiday">
+                        <select class="form-control" id="region" name="region">
+                            <option value="">Select Region (Optional)</option>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Holiday</button>
                 </form>
@@ -93,4 +92,34 @@
         </div>
     </div>
 </div>
+
+<script>
+async function populateRegions() {
+    const countrySelect = document.getElementById('country');
+    const regionSelect = document.getElementById('region');
+    const country = countrySelect.value;
+    
+    // Clear existing options
+    regionSelect.innerHTML = '<option value="">Select Region (Optional)</option>';
+    
+    if (!country) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/regions/${encodeURIComponent(country)}`);
+        if (response.ok) {
+            const regions = await response.json();
+            regions.forEach(region => {
+                const option = document.createElement('option');
+                option.value = region;
+                option.textContent = region;
+                regionSelect.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error('Error fetching regions:', error);
+    }
+}
+</script>
 {% endblock %}
