@@ -96,5 +96,19 @@
     "member_id": "3",
     "member_name": "Teresa",
     "details": "Added OOO (Conference) for 2025-09-15"
+  },
+  {
+    "timestamp": "2025-08-16 06:33:30",
+    "operation_type": "ADD_OOO",
+    "member_id": "4",
+    "member_name": "Xing",
+    "details": "Added OOO (Vacation) for 2025-09-15"
+  },
+  {
+    "timestamp": "2025-08-16 06:33:35",
+    "operation_type": "ADD_OOO",
+    "member_id": "5",
+    "member_name": "Hang",
+    "details": "Added OOO (Vacation) for 2025-09-15"
   }
 ]
