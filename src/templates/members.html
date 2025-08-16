@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Team Members - Team Availability{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2>Team Members</h2>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Add New Member</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_member') }}">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="country" class="form-label">Country</label>
+                        <select class="form-control" id="country" name="country" required onchange="populateRegions()">
+                            <option value="">Select Country</option>
+                            {% for code, name in top_economies.items() | sort(attribute=1) %}
+                            <option value="{{ name }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="region" class="form-label">Region/State/Province</label>
+                        <select class="form-control" id="region" name="region">
+                            <option value="">Select Region (Optional)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Member</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Current Members</h5>
+            </div>
+            <div class="card-body">
+                {% if members %}
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="members-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Country</th>
+                                    <th>Region</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for member_id, member in members.items() %}
+                                <tr id="member-row-{{ member_id }}">
+                                    <td>{{ member.name }}</td>
+                                    <td>{{ member.country }}</td>
+                                    <td>{{ member.region or '-' }}</td>
+                                    <td>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-outline-danger" 
+                                                onclick="deleteMember('{{ member_id }}', {{ member.name | tojson }})" 
+                                                title="Delete member">
+                                            ×
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No team members added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Regions mapping passed from backend
+const regionsMap = {{ regions_map | tojson }};
+
+function populateRegions() {
+    const countrySelect = document.getElementById('country');
+    const regionSelect = document.getElementById('region');
+    const selectedCountry = countrySelect.value;
+    
+    // Clear existing regions
+    regionSelect.innerHTML = '<option value="">Select Region (Optional)</option>';
+    
+    // Populate regions for selected country
+    if (selectedCountry && regionsMap[selectedCountry]) {
+        regionsMap[selectedCountry].forEach(function(region) {
+            const option = document.createElement('option');
+            option.value = region;
+            option.textContent = region;
+            regionSelect.appendChild(option);
+        });
+    }
+}
+
+function deleteMember(memberId, memberName) {
+    console.log('Delete function called with:', memberId, memberName);
+    
+    if (confirm(`Are you sure you want to delete member "${memberName}"? This will also remove all their OOO entries.`)) {
+        console.log('User confirmed, making request...');
+        
+        const requestBody = JSON.stringify({ member_id: memberId });
+        console.log('Request body:', requestBody);
+        
+        fetch('/delete_member', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: requestBody
+        })
+        .then(response => {
+            console.log('Response received:', response.status, response.statusText);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text(); // Get text first to see raw response
+        })
+        .then(responseText => {
+            console.log('Raw response text:', responseText);
+            try {
+                const data = JSON.parse(responseText);
+                console.log('Parsed response data:', data);
+                
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert('Error: ' + (data.error || 'Unknown error occurred'));
+                }
+            } catch (parseError) {
+                console.error('JSON parse error:', parseError);
+                alert('Error: Invalid response from server');
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            alert('An error occurred while deleting the member: ' + error.message);
+        });
+    }
+}
+</script>
+{% endblock %}

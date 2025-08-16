@@ -360,3 +360,85 @@
     background: #ffcd39;
     box-shadow: 0 2px 5px rgba(255,193,7,0.4);
 }
+
+/* Calendar Navigation Controls */
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.calendar-nav .btn {
+    width: 40px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.calendar-nav .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dark-mode .calendar-nav .btn {
+    border-color: #555;
+}
+
+.dark-mode .calendar-nav .btn:hover {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Calendar Browsing Controls */
+.calendar-browse-controls {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dark-mode .calendar-browse-controls {
+    border-color: #444;
+    background-color: #3a3a3a;
+}
+
+.calendar-browse-controls .form-select {
+    min-width: 80px;
+}
+
+.calendar-browse-controls .form-label {
+    margin-bottom: 0;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Mobile responsiveness for calendar browsing */
+@media (max-width: 768px) {
+    .calendar-browse-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .calendar-browse-controls {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .calendar-browse-controls .form-select {
+        min-width: 70px;
+        font-size: 0.9em;
+    }
+    
+    .calendar-browse-controls .btn {
+        font-size: 0.9em;
+        padding: 0.25rem 0.5rem;
+    }
+}

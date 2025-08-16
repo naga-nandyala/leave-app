@@ -39,3 +39,11 @@ it should be like below
 
 member name 1 | OOO 
 member name 2 | location (public holiday)
+
+
+### Member and public holiday functionality
+
+1. When i add new member, it should display following country options main top 10 economies in the world along with Australia.
+2. IT should also give region/state/province as option to pick and it should populate these values.
+3. once the member is added, it should check if the country and state is availabe in holidays .. if not then add national and regional holidays.
+4. use holidays libarary from python to get the data for all of above

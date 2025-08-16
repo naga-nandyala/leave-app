@@ -1,0 +1,79 @@
+[
+  {
+    "timestamp": "2025-08-16 10:29:02",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "1",
+    "member_name": "Naga Nandyala",
+    "details": "Added member: Naga Nandyala from Australia, New South Wales"
+  },
+  {
+    "timestamp": "2025-08-16 10:29:11",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "2",
+    "member_name": "Anuj Parashar",
+    "details": "Added member: Anuj Parashar from Australia, Victoria"
+  },
+  {
+    "timestamp": "2025-08-16 10:29:21",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "3",
+    "member_name": "Jeffery",
+    "details": "Added member: Jeffery from United States, California"
+  },
+  {
+    "timestamp": "2025-08-16 10:29:37",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "4",
+    "member_name": "Xing",
+    "details": "Added member: Xing from China, "
+  },
+  {
+    "timestamp": "2025-08-16 10:29:46",
+    "operation_type": "GENERATE_HOLIDAYS",
+    "member_id": null,
+    "member_name": "System",
+    "details": "Generated 102 holidays for 2 years (2025, 2026) - Countries: United States, China, Australia and regions: New South Wales (Australia), Victoria (Australia), California (United States)"
+  },
+  {
+    "timestamp": "2025-08-16 10:30:16",
+    "operation_type": "ADD_OOO",
+    "member_id": "1",
+    "member_name": "Naga Nandyala",
+    "details": "Added OOO (Vacation) for 2025-08-20"
+  },
+  {
+    "timestamp": "2025-08-16 10:30:21",
+    "operation_type": "ADD_OOO",
+    "member_id": "2",
+    "member_name": "Anuj Parashar",
+    "details": "Added OOO (Conference) for 2025-08-27"
+  },
+  {
+    "timestamp": "2025-08-16 10:30:29",
+    "operation_type": "ADD_OOO",
+    "member_id": "4",
+    "member_name": "Xing",
+    "details": "Added OOO (Sick Leave) from 2025-08-22 to 2025-08-30"
+  },
+  {
+    "timestamp": "2025-08-16 10:30:49",
+    "operation_type": "ADD_OOO",
+    "member_id": "2",
+    "member_name": "Anuj Parashar",
+    "details": "Added OOO (Personal) for 2025-12-25"
+  },
+  {
+    "timestamp": "2025-08-16 10:31:00",
+    "operation_type": "ADD_OOO",
+    "member_id": "3",
+    "member_name": "Jeffery",
+    "details": "Added OOO (Conference) for 2025-12-25"
+  },
+  {
+    "timestamp": "2025-08-16 10:31:08",
+    "operation_type": "ADD_OOO",
+    "member_id": "3",
+    "member_name": "Jeffery",
+    "details": "Added OOO (Sick Leave) for 2025-12-26"
+  }
+]
