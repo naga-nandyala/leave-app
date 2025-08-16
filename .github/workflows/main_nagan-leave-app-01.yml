@@ -34,7 +34,7 @@ jobs:
           inlineScript: |
             az webapp config set \
               --name 'nagan-leave-app-01' \
-              --resource-group 'nagan-leave-app-01' \
+              --resource-group 'rg-leave-app-prod' \
               --startup-file "gunicorn --chdir src --bind=0.0.0.0 --timeout 600 app:app"      
       - name: Install dependencies
         run: pip install -r src/requirements.txt
