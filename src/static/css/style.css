@@ -1,16 +1,23 @@
 /* Custom CSS for Team Availability App */
 
+/* Make container wider for better calendar display */
+.container {
+    max-width: 95% !important;
+}
+
 .calendar-table {
     table-layout: fixed;
+    width: 100%;
 }
 
 .calendar-day {
-    height: 120px;
+    height: 140px;
     vertical-align: top;
-    padding: 8px;
+    padding: 10px;
     position: relative;
     cursor: pointer;
     transition: background-color 0.2s;
+    width: 14.28%; /* Equal width for all 7 days */
 }
 
 .calendar-day:hover {
@@ -105,11 +112,6 @@
 
 .card {
     margin-bottom: 20px;
-}
-
-.table-responsive {
-    max-height: 600px;
-    overflow-y: auto;
 }
 
 /* Mobile responsiveness */
