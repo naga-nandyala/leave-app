@@ -712,12 +712,7 @@ def add_member():
     # Log the operation
     log_operation("ADD_MEMBER", member_id, f"Added member: {name} from {country}, {region}", name)
 
-    flash(
-        f"Member added successfully! Holidays for {country}"
-        + (f", {region}" if region else "")
-        + " have been populated.",
-        "success",
-    )
+    flash("Member added successfully!", "success")
     return redirect(url_for("members"))
 
 
@@ -768,10 +763,11 @@ def delete_member():
         response = {"success": True, "message": f"Member {member_name} deleted successfully!"}
         print(f"Returning response: {response}")
         return jsonify(response)
-    
+
     except Exception as e:
         print(f"Error in delete_member: {e}")
         import traceback
+
         traceback.print_exc()
         return jsonify({"success": False, "error": f"Internal server error: {str(e)}"}), 500
 

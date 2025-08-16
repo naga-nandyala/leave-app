@@ -11,9 +11,9 @@ A Flask-based web application to track team member availability across multiple 
 
 ## Installation
 
-1. Navigate to the app directory:
+1. Navigate to the source directory:
    ```bash
-   cd app
+   cd src
    ```
 
 2. Install required dependencies:

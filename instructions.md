@@ -9,7 +9,7 @@ A Flask-based web application for tracking team member availability across multi
 - **Backend**: Python Flask
 - **Frontend**: HTML, CSS, Bootstrap 5, JavaScript
 - **Data Storage**: JSON files (for development)
-- **Code Location**: All code must be inside `app/` folder
+- **Code Location**: All code must be inside `src/` folder
 
 ### Key Features
 
@@ -206,7 +206,7 @@ A Flask-based web application for tracking team member availability across multi
 
 ### File Structure
 ```
-app/
+src/
 ├── app.py                 # Main Flask application
 ├── templates/
 │   ├── base.html         # Base template with navigation

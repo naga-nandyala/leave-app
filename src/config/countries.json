@@ -15,6 +15,10 @@
         "CA": {
             "name": "Canada",
             "code": "CA"
+        },
+        "IN": {
+            "name": "India",
+            "code": "IN"
         }
     }
 }

@@ -5,11 +5,11 @@
 The application now uses a configuration file to manage countries instead of hardcoded values in the source code.
 
 ### Configuration File Location
-`app/config/countries.json`
+`src/config/countries.json`
 
 ### Adding a New Country
 
-1. Open `app/config/countries.json`
+1. Open `src/config/countries.json`
 2. Add a new country entry following this format:
 
 ```json
