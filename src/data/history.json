@@ -40,5 +40,19 @@
     "member_id": null,
     "member_name": "System",
     "details": "Generated 73 holidays for 2 years (2025, 2026) - Countries: China, Australia and regions: New South Wales (Australia), Victoria (Australia)"
+  },
+  {
+    "timestamp": "2025-08-16 09:59:29",
+    "operation_type": "ADD_OOO",
+    "member_id": "1",
+    "member_name": "Naga",
+    "details": "Added OOO (Vacation) for 2025-08-20"
+  },
+  {
+    "timestamp": "2025-08-16 09:59:34",
+    "operation_type": "ADD_OOO",
+    "member_id": "2",
+    "member_name": "Anuj",
+    "details": "Added OOO (Conference) for 2025-08-27"
   }
 ]
