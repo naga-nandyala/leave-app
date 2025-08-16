@@ -28,7 +28,14 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-      
+      - name: Configure startup command
+        uses: azure/cli@v1
+        with:
+          inlineScript: |
+            az webapp config set \
+              --name 'nagan-leave-app-01' \
+              --resource-group 'nagan-leave-app-01' \
+              --startup-file "gunicorn --chdir src --bind=0.0.0.0 --timeout 600 app:app"      
       - name: Install dependencies
         run: pip install -r src/requirements.txt
         
@@ -51,7 +58,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: python-app
-      
+
+          
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
