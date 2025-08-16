@@ -75,5 +75,19 @@
     "member_id": "3",
     "member_name": "Jeffery",
     "details": "Added OOO (Sick Leave) for 2025-12-26"
+  },
+  {
+    "timestamp": "2025-08-16 13:43:17",
+    "operation_type": "ADD_OOO",
+    "member_id": "1",
+    "member_name": "Naga Nandyala",
+    "details": "Added OOO (Vacation) for 2025-08-18"
+  },
+  {
+    "timestamp": "2025-08-16 13:43:45",
+    "operation_type": "GENERATE_HOLIDAYS",
+    "member_id": null,
+    "member_name": "System",
+    "details": "Generated 102 holidays for 2 years (2025, 2026) - Countries: Australia, China, United States and regions: New South Wales (Australia), Victoria (Australia), California (United States)"
   }
 ]

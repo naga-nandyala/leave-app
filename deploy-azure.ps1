@@ -86,8 +86,8 @@ if ($rgResult.properties.provisioningState -eq "Succeeded") {
 # Step 2: Create App Service Plan
 Write-Info "Step 2: Creating App Service Plan..."
 
-# Try with Free tier first (F1) since Basic tier requires quota
-Write-Info "Creating App Service Plan with Free tier (F1)..."
+# Try with Basic tier first (B1) since Free tier requires quota
+Write-Info "Creating App Service Plan with Basic tier (B1)..."
 try {
     $planResult = az appservice plan create `
         --name $AppServicePlanName `
