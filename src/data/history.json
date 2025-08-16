@@ -1,93 +1,58 @@
 [
   {
-    "timestamp": "2025-08-16 10:29:02",
+    "timestamp": "2025-08-16 14:21:01",
     "operation_type": "ADD_MEMBER",
     "member_id": "1",
-    "member_name": "Naga Nandyala",
-    "details": "Added member: Naga Nandyala from Australia, New South Wales"
+    "member_name": "naga",
+    "details": "Added member: naga from Australia, NSW"
   },
   {
-    "timestamp": "2025-08-16 10:29:11",
-    "operation_type": "ADD_MEMBER",
-    "member_id": "2",
-    "member_name": "Anuj Parashar",
-    "details": "Added member: Anuj Parashar from Australia, Victoria"
-  },
-  {
-    "timestamp": "2025-08-16 10:29:21",
-    "operation_type": "ADD_MEMBER",
-    "member_id": "3",
-    "member_name": "Jeffery",
-    "details": "Added member: Jeffery from United States, California"
-  },
-  {
-    "timestamp": "2025-08-16 10:29:37",
-    "operation_type": "ADD_MEMBER",
-    "member_id": "4",
-    "member_name": "Xing",
-    "details": "Added member: Xing from China, "
-  },
-  {
-    "timestamp": "2025-08-16 10:29:46",
+    "timestamp": "2025-08-16 14:21:08",
     "operation_type": "GENERATE_HOLIDAYS",
     "member_id": null,
     "member_name": "System",
-    "details": "Generated 102 holidays for 2 years (2025, 2026) - Countries: United States, China, Australia and regions: New South Wales (Australia), Victoria (Australia), California (United States)"
+    "details": "Generated 24 holidays for 2 years (2025, 2026) - Countries: Australia and regions: NSW (Australia)"
   },
   {
-    "timestamp": "2025-08-16 10:30:16",
-    "operation_type": "ADD_OOO",
-    "member_id": "1",
-    "member_name": "Naga Nandyala",
-    "details": "Added OOO (Vacation) for 2025-08-20"
-  },
-  {
-    "timestamp": "2025-08-16 10:30:21",
-    "operation_type": "ADD_OOO",
+    "timestamp": "2025-08-16 14:21:21",
+    "operation_type": "ADD_MEMBER",
     "member_id": "2",
-    "member_name": "Anuj Parashar",
-    "details": "Added OOO (Conference) for 2025-08-27"
+    "member_name": "anuj",
+    "details": "Added member: anuj from Australia, VIC"
   },
   {
-    "timestamp": "2025-08-16 10:30:29",
-    "operation_type": "ADD_OOO",
+    "timestamp": "2025-08-16 14:21:34",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "3",
+    "member_name": "xing",
+    "details": "Added member: xing from China, "
+  },
+  {
+    "timestamp": "2025-08-16 14:22:06",
+    "operation_type": "ADD_MEMBER",
     "member_id": "4",
-    "member_name": "Xing",
-    "details": "Added OOO (Sick Leave) from 2025-08-22 to 2025-08-30"
-  },
-  {
-    "timestamp": "2025-08-16 10:30:49",
-    "operation_type": "ADD_OOO",
-    "member_id": "2",
-    "member_name": "Anuj Parashar",
-    "details": "Added OOO (Personal) for 2025-12-25"
-  },
-  {
-    "timestamp": "2025-08-16 10:31:00",
-    "operation_type": "ADD_OOO",
-    "member_id": "3",
     "member_name": "Jeffery",
-    "details": "Added OOO (Conference) for 2025-12-25"
+    "details": "Added member: Jeffery from United States, CA"
   },
   {
-    "timestamp": "2025-08-16 10:31:08",
-    "operation_type": "ADD_OOO",
-    "member_id": "3",
-    "member_name": "Jeffery",
-    "details": "Added OOO (Sick Leave) for 2025-12-26"
-  },
-  {
-    "timestamp": "2025-08-16 13:43:17",
-    "operation_type": "ADD_OOO",
-    "member_id": "1",
-    "member_name": "Naga Nandyala",
-    "details": "Added OOO (Vacation) for 2025-08-18"
-  },
-  {
-    "timestamp": "2025-08-16 13:43:45",
+    "timestamp": "2025-08-16 14:22:11",
     "operation_type": "GENERATE_HOLIDAYS",
     "member_id": null,
     "member_name": "System",
-    "details": "Generated 102 holidays for 2 years (2025, 2026) - Countries: Australia, China, United States and regions: New South Wales (Australia), Victoria (Australia), California (United States)"
+    "details": "Generated 102 holidays for 2 years (2025, 2026) - Countries: China, Australia, United States and regions: NSW (Australia), VIC (Australia), CA (United States)"
+  },
+  {
+    "timestamp": "2025-08-16 14:22:31",
+    "operation_type": "ADD_OOO",
+    "member_id": "1",
+    "member_name": "naga",
+    "details": "Added OOO (Vacation) for 2025-10-02"
+  },
+  {
+    "timestamp": "2025-08-16 14:22:38",
+    "operation_type": "ADD_OOO",
+    "member_id": "2",
+    "member_name": "anuj",
+    "details": "Added OOO (Conference) for 2025-10-02"
   }
 ]

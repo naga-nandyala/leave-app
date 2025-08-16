@@ -1,21 +1,5 @@
 {
   "national": {
-    "Australia": {
-      "2025-04-18": "Good Friday",
-      "2025-04-21": "Easter Monday",
-      "2025-01-01": "New Year's Day",
-      "2025-01-26": "Australia Day",
-      "2025-04-25": "ANZAC Day",
-      "2025-12-25": "Christmas Day",
-      "2025-12-26": "Boxing Day",
-      "2026-04-03": "Good Friday",
-      "2026-04-06": "Easter Monday",
-      "2026-01-01": "New Year's Day",
-      "2026-01-26": "Australia Day",
-      "2026-04-25": "ANZAC Day",
-      "2026-12-25": "Christmas Day",
-      "2026-12-26": "Boxing Day"
-    },
     "China": {
       "2025-01-01": "New Year's Day",
       "2025-01-29": "Chinese New Year (Spring Festival)",
@@ -53,6 +37,22 @@
       "2026-05-04": "Labor Day (observed)",
       "2026-10-05": "National Day (observed)"
     },
+    "Australia": {
+      "2025-04-18": "Good Friday",
+      "2025-04-21": "Easter Monday",
+      "2025-01-01": "New Year's Day",
+      "2025-01-26": "Australia Day",
+      "2025-04-25": "ANZAC Day",
+      "2025-12-25": "Christmas Day",
+      "2025-12-26": "Boxing Day",
+      "2026-04-03": "Good Friday",
+      "2026-04-06": "Easter Monday",
+      "2026-01-01": "New Year's Day",
+      "2026-01-26": "Australia Day",
+      "2026-04-25": "ANZAC Day",
+      "2026-12-25": "Christmas Day",
+      "2026-12-26": "Boxing Day"
+    },
     "United States": {
       "2025-01-01": "New Year's Day",
       "2025-05-26": "Memorial Day",
@@ -81,7 +81,7 @@
   },
   "regional": {
     "Australia": {
-      "New South Wales": {
+      "NSW": {
         "2025-01-27": "Australia Day",
         "2025-04-19": "Easter Saturday",
         "2025-04-20": "Easter Sunday",
@@ -93,7 +93,7 @@
         "2026-06-08": "King's Birthday",
         "2026-12-28": "Boxing Day (observed)"
       },
-      "Victoria": {
+      "VIC": {
         "2025-01-27": "Australia Day",
         "2025-03-10": "Labor Day",
         "2025-04-19": "Easter Saturday",
@@ -111,7 +111,7 @@
       }
     },
     "United States": {
-      "California": {
+      "CA": {
         "2025-02-15": "Susan B. Anthony Day",
         "2025-03-31": "Cesar Chavez Day",
         "2025-11-28": "Day After Thanksgiving",

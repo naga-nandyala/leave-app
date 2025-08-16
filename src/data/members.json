@@ -1,22 +1,22 @@
 {
   "1": {
-    "name": "Naga Nandyala",
+    "name": "naga",
     "country": "Australia",
-    "region": "New South Wales"
+    "region": "NSW"
   },
   "2": {
-    "name": "Anuj Parashar",
+    "name": "anuj",
     "country": "Australia",
-    "region": "Victoria"
+    "region": "VIC"
   },
   "3": {
-    "name": "Jeffery",
-    "country": "United States",
-    "region": "California"
-  },
-  "4": {
-    "name": "Xing",
+    "name": "xing",
     "country": "China",
     "region": ""
+  },
+  "4": {
+    "name": "Jeffery",
+    "country": "United States",
+    "region": "CA"
   }
 }

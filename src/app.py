@@ -49,14 +49,8 @@ def get_supported_regions(country_code):
 
         # Check if the country has subdivisions/states
         if hasattr(country_holidays, "subdivisions") and country_holidays.subdivisions:
-            # Check if there are subdivision aliases (full names)
-            if hasattr(country_holidays, "subdivisions_aliases") and country_holidays.subdivisions_aliases:
-                aliases = country_holidays.subdivisions_aliases
-                # Return list of full names (keys from aliases dict), sorted
-                return sorted(list(aliases.keys()))
-            else:
-                # Return subdivision codes if no aliases available, sorted
-                return sorted(list(country_holidays.subdivisions))
+            # Return subdivision codes directly (e.g., NSW, VIC, CA, TX, etc.)
+            return sorted(list(country_holidays.subdivisions))
         else:
             return []
     except Exception as e:
@@ -89,160 +83,6 @@ COUNTRY_CODE_MAP = {country_data["name"]: country_data["code"] for country_data 
 
 # Generate regions map dynamically from holidays library
 REGIONS_MAP = generate_regions_map()
-
-
-def populate_holidays_for_country(country, region=None, year=2025):
-    """Populate holidays for a given country and region using the holidays library"""
-    holidays_data = get_holidays()
-
-    # Initialize structure if needed
-    if "national" not in holidays_data:
-        holidays_data["national"] = {}
-    if "regional" not in holidays_data:
-        holidays_data["regional"] = {}
-
-    # Get country code for holidays library
-    country_code = COUNTRY_CODE_MAP.get(country)
-    if not country_code:
-        return holidays_data
-
-    try:
-        # Get national holidays
-        if country not in holidays_data["national"]:
-            holidays_data["national"][country] = {}
-
-        country_holidays = holidays.country_holidays(country_code, years=year)
-        for date, name in country_holidays.items():
-            date_str = date.strftime("%Y-%m-%d")
-            holidays_data["national"][country][date_str] = name
-
-        # Get regional holidays if region is provided and supported
-        if region:
-            if country not in holidays_data["regional"]:
-                holidays_data["regional"][country] = {}
-            if region not in holidays_data["regional"][country]:
-                holidays_data["regional"][country][region] = {}
-
-            # Try to get state/province specific holidays
-            try:
-                # For some countries, the holidays library supports state/province codes
-                if country_code == "US":
-                    # Map full state names to abbreviations for US states
-                    state_abbrev_map = {
-                        "Alabama": "AL",
-                        "Alaska": "AK",
-                        "Arizona": "AZ",
-                        "Arkansas": "AR",
-                        "California": "CA",
-                        "Colorado": "CO",
-                        "Connecticut": "CT",
-                        "Delaware": "DE",
-                        "Florida": "FL",
-                        "Georgia": "GA",
-                        "Hawaii": "HI",
-                        "Idaho": "ID",
-                        "Illinois": "IL",
-                        "Indiana": "IN",
-                        "Iowa": "IA",
-                        "Kansas": "KS",
-                        "Kentucky": "KY",
-                        "Louisiana": "LA",
-                        "Maine": "ME",
-                        "Maryland": "MD",
-                        "Massachusetts": "MA",
-                        "Michigan": "MI",
-                        "Minnesota": "MN",
-                        "Mississippi": "MS",
-                        "Missouri": "MO",
-                        "Montana": "MT",
-                        "Nebraska": "NE",
-                        "Nevada": "NV",
-                        "New Hampshire": "NH",
-                        "New Jersey": "NJ",
-                        "New Mexico": "NM",
-                        "New York": "NY",
-                        "North Carolina": "NC",
-                        "North Dakota": "ND",
-                        "Ohio": "OH",
-                        "Oklahoma": "OK",
-                        "Oregon": "OR",
-                        "Pennsylvania": "PA",
-                        "Rhode Island": "RI",
-                        "South Carolina": "SC",
-                        "South Dakota": "SD",
-                        "Tennessee": "TN",
-                        "Texas": "TX",
-                        "Utah": "UT",
-                        "Vermont": "VT",
-                        "Virginia": "VA",
-                        "Washington": "WA",
-                        "West Virginia": "WV",
-                        "Wisconsin": "WI",
-                        "Wyoming": "WY",
-                    }
-                    state_code = state_abbrev_map.get(region)
-                    if state_code:
-                        regional_holidays = holidays.country_holidays(country_code, state=state_code, years=year)
-                        for date, name in regional_holidays.items():
-                            date_str = date.strftime("%Y-%m-%d")
-                            # Only add if it's not already a national holiday
-                            if date_str not in holidays_data["national"][country]:
-                                holidays_data["regional"][country][region][date_str] = name
-
-                elif country_code == "AU":
-                    # Map full state names to abbreviations for Australian states
-                    state_abbrev_map = {
-                        "Australian Capital Territory": "ACT",
-                        "New South Wales": "NSW",
-                        "Northern Territory": "NT",
-                        "Queensland": "QLD",
-                        "South Australia": "SA",
-                        "Tasmania": "TAS",
-                        "Victoria": "VIC",
-                        "Western Australia": "WA",
-                    }
-                    state_code = state_abbrev_map.get(region)
-                    if state_code:
-                        regional_holidays = holidays.country_holidays(country_code, state=state_code, years=year)
-                        for date, name in regional_holidays.items():
-                            date_str = date.strftime("%Y-%m-%d")
-                            # Only add if it's not already a national holiday
-                            if date_str not in holidays_data["national"][country]:
-                                holidays_data["regional"][country][region][date_str] = name
-
-                elif country_code == "CA":
-                    # Map full province names to abbreviations for Canadian provinces
-                    province_abbrev_map = {
-                        "Alberta": "AB",
-                        "British Columbia": "BC",
-                        "Manitoba": "MB",
-                        "New Brunswick": "NB",
-                        "Newfoundland and Labrador": "NL",
-                        "Northwest Territories": "NT",
-                        "Nova Scotia": "NS",
-                        "Nunavut": "NU",
-                        "Ontario": "ON",
-                        "Prince Edward Island": "PE",
-                        "Quebec": "QC",
-                        "Saskatchewan": "SK",
-                        "Yukon": "YT",
-                    }
-                    province_code = province_abbrev_map.get(region)
-                    if province_code:
-                        regional_holidays = holidays.country_holidays(country_code, prov=province_code, years=year)
-                        for date, name in regional_holidays.items():
-                            date_str = date.strftime("%Y-%m-%d")
-                            # Only add if it's not already a national holiday
-                            if date_str not in holidays_data["national"][country]:
-                                holidays_data["regional"][country][region][date_str] = name
-
-            except Exception as e:
-                print(f"Could not get regional holidays for {region}, {country}: {e}")
-
-    except Exception as e:
-        print(f"Could not get holidays for {country}: {e}")
-
-    return holidays_data
 
 
 def load_data(filename, default=None):
@@ -651,16 +491,25 @@ def generate_holidays_api():
 
             for year in years:
                 try:
-                    # Get holidays for the region for this year
-                    region_holidays = holidays.country_holidays(country_code, state=region, years=year)
+                    # Get holidays for the region using subdivision codes directly
+                    region_holidays = None
 
-                    # Add regional holidays to our data
-                    for date, name in region_holidays.items():
-                        date_str = date.strftime("%Y-%m-%d")
-                        # Only add if it's not already in national holidays
-                        if date_str not in holidays_data["national"].get(country, {}):
-                            holidays_data["regional"][country][region][date_str] = name
-                            holiday_count += 1
+                    # For different countries, the holidays library uses different parameter names
+                    if country_code == "CA":
+                        # Canada uses 'prov' parameter
+                        region_holidays = holidays.country_holidays(country_code, prov=region, years=year)
+                    else:
+                        # Most other countries use 'state' parameter (US, AU, DE, etc.)
+                        region_holidays = holidays.country_holidays(country_code, state=region, years=year)
+
+                    # Add regional holidays to our data if we got them
+                    if region_holidays:
+                        for date, name in region_holidays.items():
+                            date_str = date.strftime("%Y-%m-%d")
+                            # Only add if it's not already in national holidays
+                            if date_str not in holidays_data["national"].get(country, {}):
+                                holidays_data["regional"][country][region][date_str] = name
+                                holiday_count += 1
 
                 except Exception as e:
                     print(f"Error generating holidays for {region}, {country} in {year}: {e}")
@@ -708,14 +557,10 @@ def add_member():
 
     save_members(members_data)
 
-    # Populate holidays for the new member's country and region
-    holidays_data = populate_holidays_for_country(country, region)
-    save_holidays(holidays_data)
-
     # Log the operation
     log_operation("ADD_MEMBER", member_id, f"Added member: {name} from {country}, {region}", name)
 
-    flash("Member added successfully!", "success")
+    flash("Member added successfully! Don't forget to generate holidays to include this member's location.", "success")
     return redirect(url_for("members"))
 
 
