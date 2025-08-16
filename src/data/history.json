@@ -1,100 +1,79 @@
 [
   {
-    "timestamp": "2025-08-16 09:38:37",
-    "operation_type": "DELETE_MEMBER",
-    "member_id": "9",
-    "member_name": "adelade1",
-    "details": "Deleted member: adelade1 from Australia, South Australia"
+    "timestamp": "2025-08-16 10:29:02",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "1",
+    "member_name": "Naga Nandyala",
+    "details": "Added member: Naga Nandyala from Australia, New South Wales"
   },
   {
-    "timestamp": "2025-08-16 09:38:53",
-    "operation_type": "DELETE_MEMBER",
-    "member_id": "7",
-    "member_name": "Teresa",
-    "details": "Deleted member: Teresa from Australia, Queensland"
+    "timestamp": "2025-08-16 10:29:11",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "2",
+    "member_name": "Anuj Parashar",
+    "details": "Added member: Anuj Parashar from Australia, Victoria"
   },
   {
-    "timestamp": "2025-08-16 09:38:58",
-    "operation_type": "DELETE_MEMBER",
-    "member_id": "8",
-    "member_name": "nnn",
-    "details": "Deleted member: nnn from Australia, Northern Territory"
-  },
-  {
-    "timestamp": "2025-08-16 09:41:55",
-    "operation_type": "DELETE_MEMBER",
-    "member_id": "5",
-    "member_name": "Teresa",
-    "details": "Deleted member: Teresa from Australia, Western Australia"
-  },
-  {
-    "timestamp": "2025-08-16 09:44:01",
-    "operation_type": "DELETE_MEMBER",
-    "member_id": "4",
+    "timestamp": "2025-08-16 10:29:21",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "3",
     "member_name": "Jeffery",
-    "details": "Deleted member: Jeffery from United States, California"
+    "details": "Added member: Jeffery from United States, California"
   },
   {
-    "timestamp": "2025-08-16 09:48:14",
+    "timestamp": "2025-08-16 10:29:37",
+    "operation_type": "ADD_MEMBER",
+    "member_id": "4",
+    "member_name": "Xing",
+    "details": "Added member: Xing from China, "
+  },
+  {
+    "timestamp": "2025-08-16 10:29:46",
     "operation_type": "GENERATE_HOLIDAYS",
     "member_id": null,
     "member_name": "System",
-    "details": "Generated 73 holidays for 2 years (2025, 2026) - Countries: China, Australia and regions: New South Wales (Australia), Victoria (Australia)"
+    "details": "Generated 102 holidays for 2 years (2025, 2026) - Countries: United States, China, Australia and regions: New South Wales (Australia), Victoria (Australia), California (United States)"
   },
   {
-    "timestamp": "2025-08-16 09:59:29",
+    "timestamp": "2025-08-16 10:30:16",
     "operation_type": "ADD_OOO",
     "member_id": "1",
-    "member_name": "Naga",
+    "member_name": "Naga Nandyala",
     "details": "Added OOO (Vacation) for 2025-08-20"
   },
   {
-    "timestamp": "2025-08-16 09:59:34",
+    "timestamp": "2025-08-16 10:30:21",
     "operation_type": "ADD_OOO",
     "member_id": "2",
-    "member_name": "Anuj",
+    "member_name": "Anuj Parashar",
     "details": "Added OOO (Conference) for 2025-08-27"
   },
   {
-    "timestamp": "2025-08-16 10:07:39",
-    "operation_type": "ADD_MEMBER",
+    "timestamp": "2025-08-16 10:30:29",
+    "operation_type": "ADD_OOO",
     "member_id": "4",
-    "member_name": "first last",
-    "details": "Added member: first last from India, "
+    "member_name": "Xing",
+    "details": "Added OOO (Sick Leave) from 2025-08-22 to 2025-08-30"
   },
   {
-    "timestamp": "2025-08-16 10:07:47",
-    "operation_type": "GENERATE_HOLIDAYS",
-    "member_id": null,
-    "member_name": "System",
-    "details": "Generated 103 holidays for 2 years (2025, 2026) - Countries: Australia, China, India and regions: New South Wales (Australia), Victoria (Australia)"
+    "timestamp": "2025-08-16 10:30:49",
+    "operation_type": "ADD_OOO",
+    "member_id": "2",
+    "member_name": "Anuj Parashar",
+    "details": "Added OOO (Personal) for 2025-12-25"
   },
   {
-    "timestamp": "2025-08-16 10:08:04",
-    "operation_type": "ADD_MEMBER",
-    "member_id": "5",
-    "member_name": "xxx",
-    "details": "Added member: xxx from Canada, Alberta"
+    "timestamp": "2025-08-16 10:31:00",
+    "operation_type": "ADD_OOO",
+    "member_id": "3",
+    "member_name": "Jeffery",
+    "details": "Added OOO (Conference) for 2025-12-25"
   },
   {
-    "timestamp": "2025-08-16 10:09:48",
-    "operation_type": "ADD_MEMBER",
-    "member_id": "6",
-    "member_name": "ddd",
-    "details": "Added member: ddd from Australia, Northern Territory"
-  },
-  {
-    "timestamp": "2025-08-16 10:09:51",
-    "operation_type": "GENERATE_HOLIDAYS",
-    "member_id": null,
-    "member_name": "System",
-    "details": "Generated 133 holidays for 2 years (2025, 2026) - Countries: Canada, Australia, India, China and regions: New South Wales (Australia), Victoria (Australia), Alberta (Canada), Northern Territory (Australia)"
-  },
-  {
-    "timestamp": "2025-08-16 10:10:11",
-    "operation_type": "CANCEL_VACATION",
-    "member_id": "1",
-    "member_name": "Naga",
-    "details": "Canceled vacation (Vacation) for 2025-08-20"
+    "timestamp": "2025-08-16 10:31:08",
+    "operation_type": "ADD_OOO",
+    "member_id": "3",
+    "member_name": "Jeffery",
+    "details": "Added OOO (Sick Leave) for 2025-12-26"
   }
 ]

@@ -8,9 +8,12 @@ import holidays
 app = Flask(__name__)
 app.secret_key = "your-secret-key-change-this"
 
+# Get the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Data storage (in production, use a proper database)
-DATA_DIR = "data"
-CONFIG_DIR = "config"
+DATA_DIR = os.path.join(SCRIPT_DIR, "data")
+CONFIG_DIR = os.path.join(SCRIPT_DIR, "config")
 HOLIDAYS_FILE = os.path.join(DATA_DIR, "holidays.json")
 MEMBERS_FILE = os.path.join(DATA_DIR, "members.json")
 OOO_FILE = os.path.join(DATA_DIR, "ooo.json")

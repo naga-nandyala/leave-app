@@ -1,24 +1,16 @@
 {
-    "countries": {
-        "AU": {
-            "name": "Australia",
-            "code": "AU"
-        },
-        "CN": {
-            "name": "China",
-            "code": "CN"
-        },
-        "US": {
-            "name": "United States",
-            "code": "US"
-        },
-        "CA": {
-            "name": "Canada",
-            "code": "CA"
-        },
-        "IN": {
-            "name": "India",
-            "code": "IN"
-        }
+  "countries": {
+    "AU": {
+      "name": "Australia",
+      "code": "AU"
+    },
+    "CN": {
+      "name": "China",
+      "code": "CN"
+    },
+    "US": {
+      "name": "United States",
+      "code": "US"
     }
+  }
 }
