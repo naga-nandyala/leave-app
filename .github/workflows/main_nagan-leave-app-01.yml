@@ -29,12 +29,12 @@ jobs:
           python -m venv venv
           source venv/bin/activate
 
-      - name: Login to Azure using publish profile
-        uses: azure/webapps-deploy@v3
+      - name: Azure CLI Device Code Login
+        uses: azure/cli@v1
         with:
-          app-name: 'nagan-leave-app-01'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FC1E2D2E0424473B81D6E02EC3AA901C }}
+          inlineScript: |
+            az login --use-device-code
+            az account show
 
 
       - name: Configure startup command
