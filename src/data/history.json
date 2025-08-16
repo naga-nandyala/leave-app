@@ -89,5 +89,19 @@
     "member_id": null,
     "member_name": "System",
     "details": "Generated 102 holidays for 2 years (2025, 2026) - Countries: Australia, China, United States and regions: New South Wales (Australia), Victoria (Australia), California (United States)"
+  },
+  {
+    "timestamp": "2025-08-16 13:53:31",
+    "operation_type": "ADD_OOO",
+    "member_id": "",
+    "member_name": "Unknown",
+    "details": "Added OOO (Vacation) for 2025-08-14"
+  },
+  {
+    "timestamp": "2025-08-16 13:53:35",
+    "operation_type": "ADD_OOO",
+    "member_id": "1",
+    "member_name": "Naga Nandyala",
+    "details": "Added OOO (Vacation) for 2025-08-14"
   }
 ]

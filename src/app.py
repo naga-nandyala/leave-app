@@ -4,25 +4,40 @@ import json
 import os
 import calendar
 import holidays
+import logging
+from storage_manager import storage_manager
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-app.secret_key = "your-secret-key-change-this"
+app.secret_key = os.getenv("SECRET_KEY", "your-secret-key-change-this-in-production")
 
 # Get the directory where this script is located
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Data storage (in production, use a proper database)
-DATA_DIR = os.path.join(SCRIPT_DIR, "data")
+# Data files (now using storage manager instead of local paths)
 CONFIG_DIR = os.path.join(SCRIPT_DIR, "config")
-HOLIDAYS_FILE = os.path.join(DATA_DIR, "holidays.json")
-MEMBERS_FILE = os.path.join(DATA_DIR, "members.json")
-OOO_FILE = os.path.join(DATA_DIR, "ooo.json")
-HISTORY_FILE = os.path.join(DATA_DIR, "history.json")
+HOLIDAYS_FILE = "holidays.json"
+MEMBERS_FILE = "members.json"
+OOO_FILE = "ooo.json"
+HISTORY_FILE = "history.json"
 COUNTRIES_CONFIG_FILE = os.path.join(CONFIG_DIR, "countries.json")
 
-# Ensure directories exist
-os.makedirs(DATA_DIR, exist_ok=True)
+# Ensure config directory exists (for local config files)
 os.makedirs(CONFIG_DIR, exist_ok=True)
+
+# Log storage configuration at startup
+storage_info = storage_manager.get_storage_info()
+logger.info(f"Storage configuration: {storage_info}")
+
+
+# Add storage info endpoint
+@app.route("/api/storage_info")
+def get_storage_info():
+    """Get current storage configuration"""
+    return jsonify(storage_manager.get_storage_info())
 
 
 def load_countries_config():
@@ -246,20 +261,18 @@ def populate_holidays_for_country(country, region=None, year=2025):
 
 
 def load_data(filename, default=None):
-    """Load data from JSON file"""
+    """Load data from storage (local or Azure Blob)"""
     if default is None:
         default = {}
-    try:
-        with open(filename, "r") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return default
+    return storage_manager.load_data(filename, default)
 
 
 def save_data(filename, data):
-    """Save data to JSON file"""
-    with open(filename, "w") as f:
-        json.dump(data, f, indent=2, default=str)
+    """Save data to storage (local or Azure Blob)"""
+    success = storage_manager.save_data(filename, data)
+    if not success:
+        logger.error(f"Failed to save data to {filename}")
+    return success
 
 
 def get_holidays():
@@ -284,22 +297,22 @@ def get_history():
 
 def save_holidays(holidays_data):
     """Save holidays data"""
-    save_data(HOLIDAYS_FILE, holidays_data)
+    return save_data(HOLIDAYS_FILE, holidays_data)
 
 
 def save_members(members):
     """Save members data"""
-    save_data(MEMBERS_FILE, members)
+    return save_data(MEMBERS_FILE, members)
 
 
 def save_ooo(ooo):
     """Save OOO data"""
-    save_data(OOO_FILE, ooo)
+    return save_data(OOO_FILE, ooo)
 
 
 def save_history(history):
     """Save history data"""
-    save_data(HISTORY_FILE, history)
+    return save_data(HISTORY_FILE, history)
 
 
 def get_sorted_holidays():
