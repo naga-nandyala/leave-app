@@ -791,8 +791,16 @@ def holidays_page():
 def history():
     """View operation history"""
     history_data = get_history()
-    # Sort by timestamp (newest first)
-    history_data.sort(key=lambda x: x["timestamp"], reverse=True)
+
+    # Sort by timestamp (newest first) - convert to datetime for proper sorting
+    def parse_timestamp(entry):
+        try:
+            return datetime.strptime(entry["timestamp"], "%Y-%m-%d %H:%M:%S")
+        except (ValueError, KeyError):
+            # Fallback for any malformed timestamps
+            return datetime.min
+
+    history_data.sort(key=parse_timestamp, reverse=True)
     return render_template("history.html", history=history_data)
 
 
