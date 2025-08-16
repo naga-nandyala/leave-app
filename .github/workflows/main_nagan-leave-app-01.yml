@@ -37,14 +37,7 @@ jobs:
             az account show
 
 
-      - name: Configure startup command
-        uses: azure/cli@v1
-        with:
-          inlineScript: |
-            az webapp config set \
-              --name 'nagan-leave-app-01' \
-              --resource-group 'rg-leave-app-prod' \
-              --startup-file "gunicorn --chdir src --bind=0.0.0.0 --timeout 600 app:app"      
+ 
       - name: Install dependencies
         run: pip install -r src/requirements.txt
         
@@ -68,6 +61,14 @@ jobs:
         with:
           name: python-app
 
+      - name: Configure startup command
+        uses: azure/cli@v1
+        with:
+          inlineScript: |
+            az webapp config set \
+              --name 'nagan-leave-app-01' \
+              --resource-group 'rg-leave-app-prod' \
+              --startup-file "gunicorn --chdir src --bind=0.0.0.0 --timeout 600 app:app"               
           
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
