@@ -67,8 +67,9 @@
                                     <td>{{ member.region or '-' }}</td>
                                     <td>
                                         <button type="button" 
-                                                class="btn btn-sm btn-outline-danger" 
-                                                onclick="deleteMember('{{ member_id }}', {{ member.name | tojson }})" 
+                                                class="btn btn-sm btn-outline-danger delete-member-btn" 
+                                                data-member-id="{{ member_id }}"
+                                                data-member-name="{{ member.name }}"
                                                 title="Delete member">
                                             ×
                                         </button>
@@ -108,6 +109,18 @@ function populateRegions() {
         });
     }
 }
+
+// Add event listeners for delete buttons when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('.delete-member-btn');
+    deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            const memberId = this.getAttribute('data-member-id');
+            const memberName = this.getAttribute('data-member-name');
+            deleteMember(memberId, memberName);
+        });
+    });
+});
 
 function deleteMember(memberId, memberName) {
     console.log('Delete function called with:', memberId, memberName);

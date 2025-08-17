@@ -1,1 +1,45 @@
-{}
+{
+  "2": [
+    {
+      "start_date": "2025-10-06",
+      "end_date": "2025-10-06",
+      "reason": "Training"
+    },
+    {
+      "start_date": "2025-10-14",
+      "end_date": "2025-10-14",
+      "reason": "Vacation"
+    }
+  ],
+  "1": [
+    {
+      "start_date": "2025-10-13",
+      "end_date": "2025-10-13",
+      "reason": "Personal"
+    }
+  ],
+  "": [
+    {
+      "start_date": "2025-08-13",
+      "end_date": "2025-08-22",
+      "reason": "Vacation"
+    },
+    {
+      "start_date": "2025-08-13",
+      "end_date": "2025-08-31",
+      "reason": "Vacation"
+    }
+  ],
+  "3": [
+    {
+      "start_date": "2025-10-15",
+      "end_date": "2025-10-15",
+      "reason": "Conference"
+    },
+    {
+      "start_date": "2025-10-16",
+      "end_date": "2025-10-16",
+      "reason": "Personal"
+    }
+  ]
+}

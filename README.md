@@ -1,255 +1,308 @@
-# Team Availability App
+# Team Availability & Leave Management App
 
-A comprehensive Flask-based web application for managing team member availability, holidays, and out-of-office (OOO) schedules across multiple countries and regions. The app provides a visual calendar interface to track team availability and automatically handles national and regional holidays.
+A comprehensive Flask-based web application for managing team member availability, tracking holidays, and handling out-of-office (OOO) requests across multiple countries and regions.
 
-## 🌟 Features
+## Features Overview
 
-- **Multi-country Support**: Track team members across different countries with region-specific holiday support
-- **Automatic Holiday Generation**: Automatically generates national and regional holidays using the `holidays` Python library
-- **Calendar View**: Interactive monthly calendar showing team availability at a glance
-- **Out-of-Office Management**: Track vacation, sick leave, conferences, and personal time off
-- **Activity History**: Complete audit trail of all operations performed in the system
-- **Real-time Availability**: Check availability for specific dates with detailed reasons for unavailability
+### 🗓️ **Calendar View**
+- Interactive monthly calendar displaying team availability
+- Visual indicators for holidays and out-of-office periods
+- Quick OOO entry directly from calendar dates
 
-## 🚀 Getting Started
+### 👥 **Team Member Management**
+- Add/remove team members with location information
+- Support for multiple countries and regions/states
+- Robust delete functionality with automatic OOO cleanup
+- Data attribute-based UI interactions for improved reliability
 
-### Prerequisites
+### 🏖️ **Holiday Management**
+- Automatic holiday generation using the Python `holidays` library
+- Support for national and regional/state holidays
+- Multi-country holiday support (AU, CN, US, and expandable)
+- Manual holiday addition for custom company holidays
 
-- Python 3.8 or higher
-- Virtual environment (recommended)
+### 📝 **Out-of-Office (OOO) Tracking**
+- Add OOO entries with date ranges and reasons
+- View and cancel existing OOO entries
 
-### Installation
+### 📊 **Activity History**
+- Complete audit trail of all operations
+- Timestamped logs for member additions/deletions
 
-1. **Clone the repository**
+## How to Use
 
+### Initial Setup
+
+1. **Install Dependencies**
    ```bash
-   git clone <repository-url>
-   cd leave_app
-   ```
-
-2. **Set up virtual environment**
-
-   ```bash
-   python -m venv .venv
+   # Activate virtual environment
+   & .venv\Scripts\Activate.ps1
    
-   # On Windows
-   .venv\Scripts\activate
-   
-   # On macOS/Linux
-   source .venv/bin/activate
-   ```
-
-3. **Install dependencies**
-
-   ```bash
-   cd src
+   # Install required packages
    pip install -r requirements.txt
    ```
 
-4. **Run the application**
+2. **Initialize Data Files**
+   ```bash
+   cd src
+   python init_sample_data.py
+   ```
 
+3. **Run the Application**
    ```bash
    python app.py
    ```
 
-5. **Access the application**
-   Open your browser and navigate to `http://localhost:5000`
+4. **Access the App**
+   Open your browser to `http://localhost:5000`
 
-## 📋 How to Use
+### Adding Team Members
 
-### Adding New Countries
+1. Navigate to the **Members** page
+2. Click "Add Member" 
+3. Fill in:
+   - **Name**: Team member's full name
+   - **Country**: Select from supported countries (Australia, China, United States)
+   - **Region/State**: Automatically populated based on country selection
+4. Click "Add Member"
 
-The application supports adding new countries to the system for holiday tracking:
+### Removing Team Members
 
-1. **Edit the countries configuration file**:
-   - Navigate to `src/config/countries.json`
-   - Add new countries in the following format:
+1. Navigate to the **Members** page
+2. Locate the member in the Current Members table
+3. Click the "×" button in the Actions column
+4. Confirm deletion in the popup dialog
+5. The member and all associated OOO entries will be removed automatically
 
-   ```json
-   {
-     "countries": {
-       "AU": {"name": "Australia", "code": "AU"},
-       "US": {"name": "United States", "code": "US"},
-       "UK": {"name": "United Kingdom", "code": "GB"},
-       "DE": {"name": "Germany", "code": "DE"}
-     }
-   }
-   ```
-
-2. **Country codes must follow ISO 3166-1 alpha-2 standard** (e.g., US, GB, DE, FR, JP)
-
-3. **Restart the application** after making changes to the configuration file
-
-4. **Supported countries** include any country supported by the Python `holidays` library (100+ countries)
-
-### Adding New Team Members
-
-1. **Navigate to the Members page** (`/members`)
-
-2. **Fill out the "Add New Member" form**:
-   - **Name**: Full name of the team member
-   - **Country**: Select from the dropdown of configured countries
-   - **Region/State**: Select the appropriate region (automatically populated based on country)
-
-3. **Click "Add Member"**
-
-4. **The system will automatically**:
-   - Generate holidays for the member's country and region
-   - Log the addition in the activity history
-   - Make the member available for OOO tracking
-
-### Managing Team Members
-
-- **View all members**: Visit the Members page to see all team members and their locations
-- **Delete members**: Use the delete button next to each member (includes confirmation)
-- **Member locations**: The system tracks unique countries and regions through the API
+**Supported Regions:**
+- **Australia**: NSW, VIC, QLD, WA, SA, TAS, NT, ACT
+- **United States**: All 50 states + DC, territories
+- **China**: National holidays only
 
 ### Generating Holidays
 
-The application automatically generates holidays, but you can manually trigger holiday generation:
+After adding team members:
 
-1. **Automatic generation occurs when**:
-   - A new team member is added
-   - The system detects missing holiday data for current/next year
+1. Go to the **Holidays** page
+2. Click "Generate Holidays for Team"
+3. The system automatically:
+   - Generates holidays for current year + next year
+   - Includes national holidays for all member countries
+   - Includes regional holidays for member states/regions
+   - Creates 500+ holiday entries covering all locations
 
-2. **Manual generation**:
-   - Visit the Holidays page (`/holidays`)
-   - Click "Generate Holidays" button
-   - System generates holidays for:
-     - Current year and next year
-     - All countries where team members are located
-     - All regions/states where team members are located
+### Managing Out-of-Office
 
-3. **Holiday data includes**:
-   - **National holidays**: Country-wide holidays
-   - **Regional holidays**: State/province-specific holidays
-   - **Holiday names**: Official names in local language
-   - **Weekday information**: Shows which day of the week holidays fall on
+#### Adding OOO from Calendar:
+1. Go to the **Calendar** page
+2. Click the "+" button on any date
+3. Select:
+   - **Team Member**
+   - **End Date** (for multi-day periods)
+   - **Reason** (Vacation, Sick Leave, Personal, etc.)
+4. Click "Add OOO"
 
-### Managing Out-of-Office (OOO) Schedules
+#### Viewing/Canceling OOO:
+1. On the calendar, click the "✕" button next to an OOO entry
+2. View details including:
+   - Date range
+   - Reason
+   - Duration in days
+3. Click "Cancel Entry" to remove the entire vacation period
 
-1. **Adding OOO from Calendar**:
-   - Click on any date in the calendar view
-   - Select team member from dropdown
-   - Choose start and end dates
-   - Select reason (Vacation, Sick Leave, Conference, Personal)
-   - Click "Add OOO"
+### Understanding the Calendar
 
-2. **Adding OOO from Members page**:
-   - Use the OOO form at the bottom of the Members page
-   - Select member, dates, and reason
+**Color Coding:**
+- 🔴 **Red background**: Out-of-office (personal leave)
+- 🔵 **Blue background**: Public holidays
+- ⚪ **No highlight**: Available for work
 
-3. **Managing existing OOO**:
-   - Click on unavailable dates in the calendar to view details
-   - Cancel entire vacation periods
-   - Delete specific OOO entries
-
-4. **OOO Types supported**:
-   - Vacation
-   - Sick Leave
-   - Conference
-   - Personal
-   - Custom reasons
+**Information Displayed:**
+- **Holiday entries**: Show holiday name and location
+- **OOO entries**: Show reason and have management options
+- **Interactive elements**: Plus button to add OOO, X button to manage existing entries
 
 ### Viewing Activity History
 
-1. **Navigate to History page** (`/history`)
+The **History** page provides a complete audit trail:
+- Member additions and deletions
+- Holiday generation activities
+- OOO entries and cancellations
+- Timestamped chronological order
+- Detailed operation descriptions
 
-2. **View complete audit trail** including:
-   - **Member additions/deletions**: Track team changes
-   - **Holiday generation**: See when holidays were updated
-   - **OOO activities**: All vacation and leave entries
-   - **Timestamps**: Exact date and time of each operation
-   - **Details**: Comprehensive information about each action
+### Adding Custom Holidays
 
-3. **History includes**:
-   - Operation type (ADD_MEMBER, DELETE_MEMBER, ADD_OOO, etc.)
-   - Member information
-   - Detailed descriptions
-   - System-generated activities
+For company-specific holidays:
 
-## 🗂️ File Structure
+1. Go to **Holidays** page
+2. Scroll to "Add Custom Holiday"
+3. Enter:
+   - **Holiday Name**
+   - **Date**
+   - **Country**
+   - **Region** (optional, for regional holidays)
+4. Click "Add Holiday"
 
-```text
-leave_app/
-├── src/
-│   ├── app.py                 # Main Flask application
-│   ├── requirements.txt       # Python dependencies
-│   ├── config/
-│   │   └── countries.json     # Country configuration
-│   ├── data/                  # JSON data storage
-│   │   ├── members.json       # Team member data
-│   │   ├── holidays.json      # Holiday data
-│   │   ├── ooo.json          # Out-of-office data
-│   │   └── history.json      # Activity history
-│   ├── static/css/
-│   │   └── style.css         # Application styling
-│   └── templates/            # HTML templates
-│       ├── base.html         # Base template
-│       ├── calendar.html     # Calendar view
-│       ├── members.html      # Members management
-│       ├── holidays.html     # Holiday management
-│       └── history.html      # Activity history
-└── tests/                    # Test files
+## Configuration
+
+### Supported Countries
+
+The app comes pre-configured with major economies, defined in `src/config/countries.json`:
+
+```json
+{
+  "countries": {
+    "AU": {"name": "Australia", "code": "AU"},
+    "CN": {"name": "China", "code": "CN"},
+    "US": {"name": "United States", "code": "US"}
+  }
+}
 ```
 
-## 🌍 Supported Countries and Regions
+### Adding New Countries
 
-The application supports 100+ countries through the Python `holidays` library, including:
+1. Edit `src/config/countries.json`
+2. Add new country with ISO code:
+   ```json
+   "CA": {"name": "Canada", "code": "CA"}
+   ```
+3. Restart the application
+4. The holidays library will automatically support the new country
 
-- **United States**: All 50 states + DC
-- **Canada**: All provinces and territories
-- **Australia**: All states and territories
-- **Germany**: All federal states
-- **United Kingdom**: England, Scotland, Wales, Northern Ireland
-- **And many more...**
+### Data Storage
 
-### Region Support Examples
+All data is stored in JSON files under `src/data/`:
+- `members.json`: Team member information
+- `holidays.json`: Holiday data organized by country/region
+- `ooo.json`: Out-of-office entries by member
+- `history.json`: Activity audit trail
 
-- **US States**: California, New York, Texas, Florida, etc.
-- **Australian States**: New South Wales, Victoria, Queensland, etc.
-- **Canadian Provinces**: Ontario, British Columbia, Quebec, etc.
-- **German States**: Bavaria, Berlin, Hamburg, etc.
+## Technical Features
 
-## 🔧 API Endpoints
+### Recent Improvements (v1.1)
 
-The application provides several API endpoints for integration:
+- **Enhanced Member Management**: Improved delete functionality with robust error handling
+- **Better JavaScript Architecture**: Replaced inline event handlers with data attributes and proper event listeners
+- **Automatic Cleanup**: Member deletion now automatically removes associated OOO entries
+- **Improved User Experience**: Better error messages and confirmation dialogs
+- **Enhanced Security**: More secure JavaScript implementation without inline event handlers
 
-- `GET /api/regions/<country>` - Get regions for a country
-- `GET /api/member_locations` - Get all member countries and regions
-- `POST /api/generate_holidays` - Generate holidays for all locations
-- `GET /api/availability/<date>` - Get team availability for a specific date
-- `GET /api/ooo_details/<member_id>/<date>` - Get OOO details for a member
+### Holiday Generation Engine
+- Uses Python `holidays` library for accurate, up-to-date holiday data
+- Supports 100+ countries and their subdivisions
+- Automatically handles complex holiday rules and date calculations
+- Generates holidays for current and next year
+- No version pinning to ensure latest holiday updates
 
-## 🛠️ Technical Details
+### Smart Region Detection
+- Dynamically discovers available regions per country
+- Handles different subdivision types (states, provinces, territories)
+- Country-specific parameter mapping (e.g., 'prov' for Canada, 'state' for others)
 
-- **Framework**: Flask (Python web framework)
-- **Holiday Data**: Python `holidays` library (automatically updated)
-- **Data Storage**: JSON files (easily portable, no database required)
-- **Frontend**: HTML5, CSS3, JavaScript (vanilla)
-- **Responsive Design**: Works on desktop and mobile devices
+### API Endpoints
+- `/api/regions/<country>`: Get regions for a country
+- `/api/member_locations`: Get unique countries/regions from members
+- `/api/generate_holidays`: Bulk holiday generation
+- `/api/availability/<date>`: Get team availability for specific date
+- `/api/ooo_details/<member_id>/<date>`: Detailed OOO information
 
-## 📝 Data Management
+### Mobile Responsive
+- Bootstrap 5 responsive framework
+- Touch-friendly interface for mobile devices
+- Optimized calendar view for small screens
+- Collapsible navigation for mobile
 
-- **Automatic backups**: Consider implementing regular backups of the `data/` directory
-- **Data migration**: JSON format makes it easy to migrate to a database later
-- **Holiday updates**: The holidays library is regularly updated with new holiday data
+## Deployment
 
-## 🔍 Troubleshooting
+### Local Development
+```bash
+cd src
+python app.py
+```
 
-1. **Missing holidays**: Run holiday generation from the Holidays page
-2. **Region not found**: Check if the country code is correct in `countries.json`
-3. **Application won't start**: Ensure virtual environment is activated and dependencies are installed
-4. **Calendar not loading**: Check that member data exists and is valid JSON
+### Azure Deployment
+See `AZURE_DEPLOYMENT.md` for complete Azure deployment instructions including:
+- PowerShell and Bash deployment scripts
+- Manual Azure CLI commands
+- Troubleshooting guide
+- Configuration options
 
-## 🤝 Contributing
+### Docker (Future Enhancement)
+The app structure supports containerization with proper requirements.txt and static file organization.
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+## Use Cases
 
-## 📄 License
+### Small Teams (5-15 people)
+- Track vacation periods
+- Avoid scheduling conflicts
+- Respect cultural holidays
 
-This project is open source and available under the [MIT License](LICENSE).
+### International Teams
+- Multi-timezone holiday awareness
+- Regional holiday compliance
+- Cultural sensitivity planning
+
+### Project Management
+- Resource availability planning
+- Meeting scheduling optimization
+- Deadline planning around holidays
+
+### HR Management
+- Leave request visualization
+- Holiday calendar maintenance
+- Team coverage planning
+
+## Best Practices
+
+1. **Regular Holiday Updates**: Generate holidays at least annually
+2. **Advance Planning**: Add OOO requests well in advance
+3. **Team Communication**: Use the calendar as a team reference
+4. **History Review**: Monitor usage patterns via history logs
+5. **Data Backup**: Regularly backup the `data/` directory
+
+## Future Enhancements
+
+Potential features for expansion:
+- Email notifications for OOO requests
+- Team coverage recommendations
+- Export to popular calendar formats
+- Integration with HR systems
+- Multi-year calendar views
+- Approval workflows for OOO requests
+
+## Troubleshooting
+
+### Common Issues
+
+**Empty Calendar**: Add team members first, then generate holidays
+
+**Missing Holidays**: Click "Generate Holidays for Team" after adding members
+
+**OOO Not Showing**: Ensure the date range is correct and member is selected
+
+**Regional Holidays Missing**: Verify the member's region is correctly set
+
+**Delete Member Not Working**: Ensure JavaScript is enabled; check browser console for errors. Recent improvements have resolved most delete functionality issues.
+
+**Member Names with Special Characters**: The app now properly handles names with apostrophes, quotes, and special characters in the delete functionality.
+
+### Getting Help
+
+1. Check the **History** page for operation logs
+2. Verify team members have correct location information
+3. Ensure holidays have been generated for your team's locations
+4. Check browser console for JavaScript errors
+
+---
+
+**Version**: 1.1  
+**Last Updated**: August 2025  
+**Technology Stack**: Flask, Python, Bootstrap 5, JavaScript  
+**License**: MIT  
+**Author**: Team Availability Management System
+
+**Recent Updates**: 
+- Fixed delete member functionality with improved JavaScript architecture
+- Enhanced error handling and user experience
+- Automatic cleanup of related data when deleting members
