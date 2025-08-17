@@ -39,7 +39,7 @@ A comprehensive Flask-based web application for managing team member availabilit
    & .venv\Scripts\Activate.ps1
    
    # Install required packages
-   pip install -r requirements.txt
+   pip install -r src/requirements.txt
    ```
 
 2. **Initialize Data Files**
@@ -232,26 +232,13 @@ See `AZURE_DEPLOYMENT.md` for complete Azure deployment instructions including:
 The app structure supports containerization with proper requirements.txt and static file organization.
 
 ## Use Cases
-
-### Small Teams (5-15 people)
-- Track vacation periods
-- Avoid scheduling conflicts
-- Respect cultural holidays
-
+ 
 ### International Teams
+
 - Multi-timezone holiday awareness
 - Regional holiday compliance
 - Cultural sensitivity planning
 
-### Project Management
-- Resource availability planning
-- Meeting scheduling optimization
-- Deadline planning around holidays
-
-### HR Management
-- Leave request visualization
-- Holiday calendar maintenance
-- Team coverage planning
 
 ## Best Practices
 
@@ -264,12 +251,9 @@ The app structure supports containerization with proper requirements.txt and sta
 ## Future Enhancements
 
 Potential features for expansion:
-- Email notifications for OOO requests
-- Team coverage recommendations
-- Export to popular calendar formats
-- Integration with HR systems
-- Multi-year calendar views
-- Approval workflows for OOO requests
+- One Email every Monday with snapshot of availability for next 2 weeks.
+- Ability to download outlook calendar with non-blocking entries to inform about team member availability.
+ 
 
 ## Troubleshooting
 
@@ -294,15 +278,3 @@ Potential features for expansion:
 3. Ensure holidays have been generated for your team's locations
 4. Check browser console for JavaScript errors
 
----
-
-**Version**: 1.1  
-**Last Updated**: August 2025  
-**Technology Stack**: Flask, Python, Bootstrap 5, JavaScript  
-**License**: MIT  
-**Author**: Team Availability Management System
-
-**Recent Updates**: 
-- Fixed delete member functionality with improved JavaScript architecture
-- Enhanced error handling and user experience
-- Automatic cleanup of related data when deleting members
